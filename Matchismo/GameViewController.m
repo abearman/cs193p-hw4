@@ -87,42 +87,7 @@
     }
 }
 
-- (void) setUpCards {
-    if ([self isKindOfClass:[CardGameViewController class]]) {
-        for (int i = 0; i < self.grid.rowCount; i++) {
-            for (int j = 0; j < self.grid.columnCount; j++) {
-                Card *card = [self.game.deck drawRandomCard];
-                CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
-                pcView.userInteractionEnabled = YES;
-                
-                PlayingCard *playingCard = (PlayingCard *)card;
-                pcView.suit = playingCard.suit;
-                pcView.rank = playingCard.rank;
-                
-                [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
-                [self.backgroundView addSubview:pcView];
-            }
-        }
-        
-    } else if ([self isKindOfClass:[SetGameViewController class]]) { //TODO
-        for (int i = 0; i < self.grid.rowCount; i++) {
-            for (int j = 0; j < self.grid.columnCount; j++) {
-                Card *card = [self.game.deck drawRandomCard];
-                CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
-                
-                SetCard *setCard = (SetCard *)card;
-                pcView.suit = setCard.contents;
-                pcView.faceUp = YES;
-                
-                [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
-                [self.backgroundView addSubview:pcView];
-            }
-        }
-        
-    }
-}
+- (void) setUpCards { }
 
 /*
  * Action method to handle the event that the user clicks on "Start New Game"

@@ -9,6 +9,8 @@
 #import "SetGameViewController.h"
 #import "GameViewController.h"
 #import "SetCardDeck.h"
+#import "PlayingCardView.h"
+#import "SetCard.h"
 
 @interface SetGameViewController ()
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
@@ -34,6 +36,24 @@
 - (void)reinitializeGame {
     [super reinitializeGame];
     self.game.gameMode = 1;
+}
+
+- (void) setUpCards {
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            Card *card = [self.game.deck drawRandomCard];
+            CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+            PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
+            
+            SetCard *setCard = (SetCard *)card;
+            pcView.suit = setCard.contents;
+            pcView.faceUp = YES;
+            
+            [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
+            [self.backgroundView addSubview:pcView];
+        }
+    }
+    
 }
 
 /* Helper method to return a NSAttributedString containing the SetCard's contents */

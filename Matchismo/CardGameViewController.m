@@ -34,6 +34,24 @@
     return [[PlayingCardDeck alloc] init];
 }
 
+- (void) setUpCards {
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            Card *card = [self.game.deck drawRandomCard];
+            CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+            PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
+            pcView.userInteractionEnabled = YES;
+            
+            PlayingCard *playingCard = (PlayingCard *)card;
+            pcView.suit = playingCard.suit;
+            pcView.rank = playingCard.rank;
+            
+            [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
+            [self.backgroundView addSubview:pcView];
+        }
+    }
+}
+
 - (NSMutableAttributedString *)getCardAttributedContents:(Card *)card {
     NSMutableAttributedString *contents = [[NSMutableAttributedString alloc] initWithString:card.contents];
     PlayingCard *pc = (PlayingCard *)card;
