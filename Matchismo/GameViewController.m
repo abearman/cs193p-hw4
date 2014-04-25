@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 @property (strong, nonatomic) UIPinchGestureRecognizer *pinchRecognizer;
+@property (strong, nonatomic) UIPanGestureRecognizer *panRecognizer;
 @property (nonatomic) BOOL cardsInStack;
 
 @end
@@ -32,6 +33,8 @@
                                                           usingDeck: [self createDeck]];
     
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
+    NSLog(@"%f %f %f %f", self.backgroundView.frame.origin.x, self.backgroundView.frame.origin.y, self.backgroundView.frame.size.width, self.backgroundView.frame.size.height);
+    
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
     self.grid = [[Grid alloc] init];
     [self setUpGrid];
@@ -43,6 +46,10 @@
     
     self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchAction:)];
     [self.backgroundView addGestureRecognizer:self.pinchRecognizer];
+    
+    self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+    [self.backgroundView addGestureRecognizer:self.panRecognizer];
+    [self.panRecognizer setMaximumNumberOfTouches:1];
 }
 
 /*
@@ -82,6 +89,14 @@
     }
 }
 
+- (void) panAction:(UIPanGestureRecognizer *)gesture {
+    if (self.cardsInStack) {
+        CGPoint translation = [gesture translationInView:gesture.view];
+        gesture.view.center = CGPointMake(gesture.view.center.x + translation.x, gesture.view.center.y + translation.y);
+        [gesture setTranslation:CGPointMake(0, 0) inView: gesture.view];
+    }
+}
+
 - (void)pinchAction:(UIPinchGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded) {
         [self gatherCardsIntoStack];
@@ -91,6 +106,8 @@
 - (void)tapAction {
     if (self.cardsInStack) {
         int index = 0;
+        self.backgroundView.frame = CGRectMake(20.0, 37.0, 280.0, 442.0); // reinit background frame
+        
         for (int i = 0; i < self.grid.rowCount; i++) {
             for (int j = 0; j < self.grid.columnCount; j++) {
                 PlayingCardView *pcView = [self.cardViews objectAtIndex:index];
