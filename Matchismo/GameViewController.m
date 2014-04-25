@@ -45,9 +45,25 @@
  */
 - (IBAction)startNewGame:(UIButton *)sender {
     [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
     [self updateAllCards];
     [self redrawCards];
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
+    
+    for (PlayingCardView *pcView in self.cardViews) {
+        [PlayingCardView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationCurveEaseInOut
+                                  animations:^{
+                                      pcView.frame = CGRectOffset(pcView.frame, 0, 500);
+                                  }
+                                  completion:^(BOOL finished) {
+                                      //pcView.alpha = 0.0;
+                                      [PlayingCardView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationCurveEaseOut animations:^{
+                                            pcView.frame = CGRectOffset(pcView.frame, 0, -500);
+                                          }
+                                      completion:nil];
+                                      
+                                  }];
+    }
+    
 }
 
 - (void)tapAction {
