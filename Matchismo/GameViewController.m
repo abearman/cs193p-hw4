@@ -18,6 +18,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *startNewGame;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
+@property (strong, nonatomic) UIPinchGestureRecognizer *pinchRecognizer;
+@property (nonatomic) BOOL cardsInStack;
 
 @end
 
@@ -38,6 +40,9 @@
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
     self.tapRecognizer.numberOfTapsRequired = 1;
     [self.backgroundView addGestureRecognizer:self.tapRecognizer];
+    
+    self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchAction:)];
+    [self.backgroundView addGestureRecognizer:self.pinchRecognizer];
 }
 
 /*
@@ -66,18 +71,49 @@
     
 }
 
+- (void)gatherCardsIntoStack {
+    self.cardsInStack = YES;
+    for (PlayingCardView *pcView in self.cardViews) {
+        [PlayingCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationCurveEaseInOut
+                                  animations:^{
+                                      pcView.frame = CGRectMake(10, 10, pcView.frame.size.width, pcView.frame.size.height);
+                                  }
+                                  completion:nil];
+    }
+}
+
+- (void)pinchAction:(UIPinchGestureRecognizer *)gesture {
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        [self gatherCardsIntoStack];
+    }
+}
+
 - (void)tapAction {
-    CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
-    UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
-    if ([self isKindOfClass:[CardGameViewController class]]) {
-        PlayingCardView *pcView = (PlayingCardView *)tappedView;
-        int chosenCardIndex = (int)[self.cardViews indexOfObject:pcView]; // Retrieves the index of the chosen card
-        [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
-        [self updateAllCards]; // Should update the UI of all card views appropriately // TODO
-        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
+    if (self.cardsInStack) {
+        int index = 0;
+        for (int i = 0; i < self.grid.rowCount; i++) {
+            for (int j = 0; j < self.grid.columnCount; j++) {
+                PlayingCardView *pcView = [self.cardViews objectAtIndex:index];
+                index++;
+                CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                pcView.frame = viewRect;
+            }
+        }
+        self.cardsInStack = false;
         
-    } else if ([self isKindOfClass:[SetGameViewController class]]) {
-        
+    } else {
+        CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
+        UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
+        if ([self isKindOfClass:[CardGameViewController class]]) {
+            PlayingCardView *pcView = (PlayingCardView *)tappedView;
+            int chosenCardIndex = (int)[self.cardViews indexOfObject:pcView]; // Retrieves the index of the chosen card
+            [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
+            [self updateAllCards]; // Should update the UI of all card views appropriately // TODO
+            self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
+            
+        } else if ([self isKindOfClass:[SetGameViewController class]]) {
+            
+        }
     }
 }
 
