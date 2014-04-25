@@ -40,6 +40,16 @@
     [self.backgroundView addGestureRecognizer:self.tapRecognizer];
 }
 
+/*
+ * Action method to handle the event that the user clicks on "Start New Game"
+ */
+- (IBAction)startNewGame:(UIButton *)sender {
+    [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
+    [self updateAllCards];
+    [self redrawCards];
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
+}
+
 - (void)tapAction {
     CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
     UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
@@ -55,45 +65,23 @@
     }
 }
 
-- (void)flipAllCards {
-    for (PlayingCardView *pcView in self.cardViews) {
-        if (pcView.faceUp) {
-            [PlayingCardView transitionWithView:pcView
-                                       duration:0.5
-                                        options:UIViewAnimationOptionTransitionFlipFromRight
-                                     animations:^{
-                                         pcView.faceUp = NO;
-                                     } completion:nil];
-        }
-    }
+- (void)animateCardFlippingWithCard:(PlayingCardView *)pcView withSide:(BOOL)isFaceUp {
+    [PlayingCardView transitionWithView:pcView
+                               duration:0.5
+                                options:UIViewAnimationOptionTransitionFlipFromRight
+                             animations:^{
+                                 pcView.faceUp = isFaceUp;
+                             } completion:nil];
 }
 
 - (void)updateAllCards {
     for (PlayingCardView *pcView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
-        if ([self.game.lastCards containsObject:card]) {
-            if (card.isChosen) {
-                [PlayingCardView transitionWithView:pcView
-                                           duration:0.5
-                                            options:UIViewAnimationOptionTransitionFlipFromRight
-                                         animations:^{
-                                             pcView.faceUp = YES;
-                                         } completion:nil];
-            } else {
-                [PlayingCardView transitionWithView:pcView
-                                           duration:0.5
-                                            options:UIViewAnimationOptionTransitionFlipFromRight
-                                         animations:^{
-                                             pcView.faceUp = NO;
-                                         } completion:nil];
-            }
-        } else {
-            if (card.isChosen) {
-                pcView.faceUp = YES;
-            } else {
-                pcView.faceUp = NO;
-            }
+        if (card.isChosen && !pcView.faceUp) {
+            [self animateCardFlippingWithCard:pcView withSide:YES];
+        } else if (!card.isChosen && pcView.faceUp) {
+            [self animateCardFlippingWithCard:pcView withSide:NO];
         }
     }
 }
@@ -126,17 +114,6 @@
 
 - (void) setUpCards { }
 - (void) redrawCards { }
-
-/*
- * Action method to handle the event that the user clicks on "Start New Game"
- */
-- (IBAction)startNewGame:(UIButton *)sender {
-    [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
-    [self flipAllCards];
-    [self redrawCards];
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
-}
-
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
 - (UIImage *)backgroundImageForCard:(Card *)card { return nil; }
 - (Deck *)createDeck { return nil; }
