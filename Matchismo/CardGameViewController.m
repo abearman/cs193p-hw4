@@ -16,7 +16,7 @@
 @interface CardGameViewController ()
 @end
 
-#define NUM_CARDS 30;
+#define NUM_CARDS 36;
 
 @implementation CardGameViewController
 
@@ -35,9 +35,11 @@
 }
 
 - (void) setUpCards {
+    int index = 0;
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
-            Card *card = [self.game.deck drawRandomCard];
+            Card *card = [self.game cardAtIndex:index];
+            index++;
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
             PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
             pcView.userInteractionEnabled = YES;
@@ -49,6 +51,16 @@
             [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
             [self.backgroundView addSubview:pcView];
         }
+    }
+}
+
+- (void) redrawCards {
+    int index = 0;
+    for (PlayingCardView *pcView in self.cardViews) {
+        PlayingCard *playingCard = (PlayingCard *)[self.game cardAtIndex:index];
+        pcView.suit = playingCard.suit;
+        pcView.rank = playingCard.rank;
+        index++;
     }
 }
 

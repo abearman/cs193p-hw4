@@ -25,6 +25,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:36 // Initialize the CardMatchingGame
+                                                          usingDeck: [self createDeck]];
+    
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
     self.grid = [[Grid alloc] init];
@@ -41,16 +45,56 @@
     UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
     if ([self isKindOfClass:[CardGameViewController class]]) {
         PlayingCardView *pcView = (PlayingCardView *)tappedView;
-        
-        [PlayingCardView transitionWithView:pcView
-                                   duration:0.5
-                                    options:UIViewAnimationOptionTransitionFlipFromRight
-                                 animations:^{
-                                     pcView.faceUp = !pcView.faceUp;
-                                 } completion:nil];
+        int chosenCardIndex = (int)[self.cardViews indexOfObject:pcView]; // Retrieves the index of the chosen card
+        [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
+        [self updateAllCards]; // Should update the UI of all card views appropriately // TODO
+        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
         
     } else if ([self isKindOfClass:[SetGameViewController class]]) {
         
+    }
+}
+
+- (void)flipAllCards {
+    for (PlayingCardView *pcView in self.cardViews) {
+        if (pcView.faceUp) {
+            [PlayingCardView transitionWithView:pcView
+                                       duration:0.5
+                                        options:UIViewAnimationOptionTransitionFlipFromRight
+                                     animations:^{
+                                         pcView.faceUp = NO;
+                                     } completion:nil];
+        }
+    }
+}
+
+- (void)updateAllCards {
+    for (PlayingCardView *pcView in self.cardViews) {
+        NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
+        Card *card = [self.game cardAtIndex:cardViewIndex];
+        if ([self.game.lastCards containsObject:card]) {
+            if (card.isChosen) {
+                [PlayingCardView transitionWithView:pcView
+                                           duration:0.5
+                                            options:UIViewAnimationOptionTransitionFlipFromRight
+                                         animations:^{
+                                             pcView.faceUp = YES;
+                                         } completion:nil];
+            } else {
+                [PlayingCardView transitionWithView:pcView
+                                           duration:0.5
+                                            options:UIViewAnimationOptionTransitionFlipFromRight
+                                         animations:^{
+                                             pcView.faceUp = NO;
+                                         } completion:nil];
+            }
+        } else {
+            if (card.isChosen) {
+                pcView.faceUp = YES;
+            } else {
+                pcView.faceUp = NO;
+            }
+        }
     }
 }
 
@@ -59,13 +103,6 @@
     _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardViews count]
                                               usingDeck: [self createDeck]];
     self.game.gameMode = 0; // Default 2-card playing mode
-}
-
-// Lazily intantiate the CardMatchingGame object
-- (CardMatchingGame *)game {
-    if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardViews count]
-                                                          usingDeck: [self createDeck]];
-    return _game;
 }
 
 // Lazily instantiate the NSMutableArray of cardViews
@@ -88,12 +125,15 @@
 }
 
 - (void) setUpCards { }
+- (void) redrawCards { }
 
 /*
  * Action method to handle the event that the user clicks on "Start New Game"
  */
 - (IBAction)startNewGame:(UIButton *)sender {
     [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
+    [self flipAllCards];
+    [self redrawCards];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
 }
 
