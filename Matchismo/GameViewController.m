@@ -95,8 +95,13 @@
             for (int j = 0; j < self.grid.columnCount; j++) {
                 PlayingCardView *pcView = [self.cardViews objectAtIndex:index];
                 index++;
-                CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                pcView.frame = viewRect;
+                
+                [PlayingCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationCurveEaseInOut
+                                          animations:^{
+                                              CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                              pcView.frame = viewRect;
+                                          }
+                                          completion:nil];
             }
         }
         self.cardsInStack = false;
