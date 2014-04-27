@@ -14,7 +14,6 @@
 #import "SetCardView.h"
 
 @interface SetGameViewController ()
-@property (weak, nonatomic) IBOutlet UIView *backgroundView;
 
 @end
 

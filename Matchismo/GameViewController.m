@@ -33,8 +33,6 @@
                                                           usingDeck: [self createDeck]];
     
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
-    NSLog(@"%f %f %f %f", self.backgroundView.frame.origin.x, self.backgroundView.frame.origin.y, self.backgroundView.frame.size.width, self.backgroundView.frame.size.height);
-    
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
     self.grid = [[Grid alloc] init];
     [self setUpGrid];
@@ -61,15 +59,14 @@
     [self updateAllCards];
     [self redrawCards];
     
-    for (PlayingCardView *pcView in self.cardViews) {
-        [PlayingCardView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationCurveEaseInOut
+    for (UIView *view in self.cardViews) {
+        [UIView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationOptionCurveEaseInOut
                                   animations:^{
-                                      pcView.frame = CGRectOffset(pcView.frame, 0, 500);
+                                      view.frame = CGRectOffset(view.frame, 0, 500);
                                   }
                                   completion:^(BOOL finished) {
-                                      //pcView.alpha = 0.0;
-                                      [PlayingCardView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationCurveEaseOut animations:^{
-                                            pcView.frame = CGRectOffset(pcView.frame, 0, -500);
+                                      [UIView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                                            view.frame = CGRectOffset(view.frame, 0, -500);
                                           }
                                       completion:nil];
                                       
@@ -80,10 +77,10 @@
 
 - (void)gatherCardsIntoStack {
     self.cardsInStack = YES;
-    for (PlayingCardView *pcView in self.cardViews) {
-        [PlayingCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationCurveEaseInOut
+    for (UIView *view in self.cardViews) {
+        [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                                   animations:^{
-                                      pcView.frame = CGRectMake(10, 10, pcView.frame.size.width, pcView.frame.size.height);
+                                      view.frame = CGRectMake(10, 10, view.frame.size.width, view.frame.size.height);
                                   }
                                   completion:nil];
     }
@@ -110,13 +107,13 @@
         
         for (int i = 0; i < self.grid.rowCount; i++) {
             for (int j = 0; j < self.grid.columnCount; j++) {
-                PlayingCardView *pcView = [self.cardViews objectAtIndex:index];
+                UIView *view = [self.cardViews objectAtIndex:index];
                 index++;
                 
-                [PlayingCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationCurveEaseInOut
+                [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                                           animations:^{
                                               CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                                              pcView.frame = viewRect;
+                                              view.frame = viewRect;
                                           }
                                           completion:nil];
             }
