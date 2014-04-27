@@ -11,6 +11,7 @@
 #import "SetCardDeck.h"
 #import "PlayingCardView.h"
 #import "SetCard.h"
+#import "SetCardView.h"
 
 @interface SetGameViewController ()
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
@@ -43,12 +44,15 @@
         for (int j = 0; j < self.grid.columnCount; j++) {
             Card *card = [self.game.deck drawRandomCard];
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-            PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
-            
+            SetCardView *pcView = [[SetCardView alloc] initWithFrame:viewRect];
+
             SetCard *setCard = (SetCard *)card;
-            pcView.suit = setCard.contents;
-            pcView.faceUp = YES;
-            
+            pcView.chosen = NO;
+            pcView.color = setCard.color;
+            pcView.number = setCard.number;
+            pcView.shading = setCard.shading;
+            pcView.symbol = setCard.symbol;
+
             [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
             [self.backgroundView addSubview:pcView];
         }
@@ -56,7 +60,7 @@
     
 }
 
-/* Helper method to return a NSAttributedString containing the SetCard's contents */
+/*
 - (NSAttributedString *)titleForCard: (Card *)card {
     NSArray *chunks = [card.contents componentsSeparatedByString:@" "];
     NSString *symbols = [chunks firstObject];
@@ -88,10 +92,9 @@
     return contents;
 }
 
-/* Helper method that returns the background impage of a card: either a white, unselected card,
- or a gray, selected one. */
 - (UIImage *)backgroundImageForCard:(Card *)card {
     return [UIImage imageNamed:card.isChosen ? @"graybox-1": @"cardfront"];
 }
+*/
 
 @end
