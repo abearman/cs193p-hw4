@@ -123,37 +123,12 @@
     } else {
         CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
         UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
-        if ([self isKindOfClass:[CardGameViewController class]]) {
-            PlayingCardView *pcView = (PlayingCardView *)tappedView;
-            int chosenCardIndex = (int)[self.cardViews indexOfObject:pcView]; // Retrieves the index of the chosen card
-            [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
-            [self updateAllCards]; // Should update the UI of all card views appropriately // TODO
-            self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
-            
-        } else if ([self isKindOfClass:[SetGameViewController class]]) {
-            
-        }
-    }
-}
+        
+        int chosenCardIndex = (int)[self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
+        [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
+        [self updateAllCards]; // Should update the UI of all card views appropriately, handled by the subclasses
+        self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
 
-- (void)animateCardFlippingWithCard:(PlayingCardView *)pcView withSide:(BOOL)isFaceUp {
-    [PlayingCardView transitionWithView:pcView
-                               duration:0.5
-                                options:UIViewAnimationOptionTransitionFlipFromRight
-                             animations:^{
-                                 pcView.faceUp = isFaceUp;
-                             } completion:nil];
-}
-
-- (void)updateAllCards {
-    for (PlayingCardView *pcView in self.cardViews) {
-        NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
-        Card *card = [self.game cardAtIndex:cardViewIndex];
-        if (card.isChosen && !pcView.faceUp) {
-            [self animateCardFlippingWithCard:pcView withSide:YES];
-        } else if (!card.isChosen && pcView.faceUp) {
-            [self animateCardFlippingWithCard:pcView withSide:NO];
-        }
     }
 }
 
@@ -184,6 +159,7 @@
 }
 
 - (void) setUpCards { }
+- (void)updateAllCards { }
 - (void) redrawCards { }
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
 - (UIImage *)backgroundImageForCard:(Card *)card { return nil; }

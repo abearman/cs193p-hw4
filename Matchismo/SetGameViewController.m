@@ -52,7 +52,6 @@
             [self.backgroundView addSubview:pcView];
         }
     }
-    
 }
 
 /* Helper method to return a NSAttributedString containing the SetCard's contents */

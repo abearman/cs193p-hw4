@@ -54,6 +54,27 @@
     }
 }
 
+- (void)updateAllCards {
+    for (PlayingCardView *pcView in self.cardViews) {
+        NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
+        Card *card = [self.game cardAtIndex:cardViewIndex];
+        if (card.isChosen && !pcView.faceUp) {
+            [self animateCardFlippingWithCard:pcView withSide:YES];
+        } else if (!card.isChosen && pcView.faceUp) {
+            [self animateCardFlippingWithCard:pcView withSide:NO];
+        }
+    }
+}
+
+- (void)animateCardFlippingWithCard:(PlayingCardView *)pcView withSide:(BOOL)isFaceUp {
+    [PlayingCardView transitionWithView:pcView
+                               duration:0.5
+                                options:UIViewAnimationOptionTransitionFlipFromRight
+                             animations:^{
+                                 pcView.faceUp = isFaceUp;
+                             } completion:nil];
+}
+
 - (void) redrawCards {
     int index = 0;
     for (PlayingCardView *pcView in self.cardViews) {
