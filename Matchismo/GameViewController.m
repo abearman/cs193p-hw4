@@ -61,18 +61,19 @@
     
     double i = 0.0;
     for (UIView *view in self.cardViews) {
-        [UIView animateWithDuration:1.0 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count]) options:UIViewAnimationOptionCurveEaseInOut
-                                  animations:^{
-                                      view.frame = CGRectOffset(view.frame, 0, 500);
-                                  }
-                                completion:^(BOOL finished) {
-                                        view.frame = CGRectOffset(view.frame, 0, -1000);
-                                      [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                                            view.frame = CGRectOffset(view.frame, 0, 500);
-                                          }
-                                      completion:nil];
+        [UIView animateWithDuration:1.0 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count])
+                            options: UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             view.frame = CGRectOffset(view.frame, 0, 500);
+                         }
+                         completion:^(BOOL finished) {
+                             view.frame = CGRectOffset(view.frame, 0, -1000);
+                             [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                                 view.frame = CGRectOffset(view.frame, 0, 500);
+                         }
+                        completion:nil];
                                       
-                                  }];
+         }];
     }
     
 }
@@ -105,12 +106,21 @@
 - (void)tapAction {
     if (self.cardsInStack) {
         int index = 0;
-        self.backgroundView.frame = CGRectMake(20.0, 37.0, 280.0, 442.0); // reinit background frame
-        
         for (int i = 0; i < self.grid.rowCount; i++) {
             for (int j = 0; j < self.grid.columnCount; j++) {
                 UIView *view = [self.cardViews objectAtIndex:index];
                 index++;
+                view.frame = CGRectMake(self.backgroundView.frame.origin.x - 10, self.backgroundView.frame.origin.y - 10, view.frame.size.width, view.frame.size.height);
+            }
+        }
+        
+        self.backgroundView.frame = CGRectMake(20.0, 37.0, 280.0, 442.0); // reinit background frame
+        
+        int jdex = 0;
+        for (int i = 0; i < self.grid.rowCount; i++) {
+            for (int j = 0; j < self.grid.columnCount; j++) {
+                UIView *view = [self.cardViews objectAtIndex:jdex];
+                jdex++;
                 
                 [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                                           animations:^{

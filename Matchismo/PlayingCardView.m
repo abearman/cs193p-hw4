@@ -210,24 +210,4 @@
     [self setNeedsDisplay];
 }
 
-#pragma mark Initialization
-
-- (void)setup {
-    self.backgroundColor = nil;
-    self.opaque = NO;
-    self.contentMode = UIViewContentModeRedraw;
-}
-
-- (void)awakeFromNib {
-    [self setup];
-}
-
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
-
 @end
