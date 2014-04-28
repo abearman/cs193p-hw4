@@ -43,17 +43,17 @@
         for (int j = 0; j < self.grid.columnCount; j++) {
             Card *card = [self.game.deck drawRandomCard];
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-            SetCardView *pcView = [[SetCardView alloc] initWithFrame:viewRect];
+            SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
 
             SetCard *setCard = (SetCard *)card;
-            pcView.chosen = NO;
-            pcView.color = setCard.color;
-            pcView.number = setCard.number;
-            pcView.shading = setCard.shading;
-            pcView.symbol = setCard.symbol;
+            scView.chosen = NO;
+            scView.color = setCard.color;
+            scView.number = setCard.number;
+            scView.shading = setCard.shading;
+            scView.shape = setCard.shape;
 
-            [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
-            [self.backgroundView addSubview:pcView];
+            [self.cardViews addObject:scView]; // Adds the PlayingCardView to the NSMutableArray
+            [self.backgroundView addSubview:scView];
         }
     }
 }

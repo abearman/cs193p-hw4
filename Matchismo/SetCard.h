@@ -12,10 +12,26 @@
 
 // 4 properties:
 @property (nonatomic) NSUInteger number;        // One, two, or three
-@property (strong, nonatomic) NSString *symbol; // Triangle, circle, or square
-@property (nonatomic) NSUInteger shading;       // 0 for solid, 1 for striped, 2 for open
-@property (nonatomic) NSUInteger color;         // 0 for red, 1 for green, 2 for purple
 
-+ (NSArray *)validSymbols;
+typedef enum {
+    SOLID,
+    STRIPED,
+    OPEN
+} Shading;
+@property (nonatomic) Shading shading;
+
+typedef enum {
+    RED,
+    GREEN,
+    PURPLE
+} Color;
+@property (nonatomic) Color color;
+
+typedef enum {
+    SQUIGGLE,
+    DIAMOND,
+    OVAL
+} Shape;
+@property (nonatomic) Shape shape;
 
 @end

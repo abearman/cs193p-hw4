@@ -19,12 +19,13 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        for (NSString *symbol in [SetCard validSymbols]) {
-            for (NSUInteger number = 1; number <= 3; number++) {
-                for (NSUInteger shading = 0; shading < 3; shading++) {
-                    for (NSUInteger color = 0; color < 3; color++) {
+        
+        for (int shape = SQUIGGLE; shape <= OVAL; shape++) {
+            for (int number = 1; number <= 3; number++) {
+                for (int shading = SOLID; shading <= OPEN; shading++) {
+                    for (int color = RED; color <= PURPLE; color++) {
                         SetCard *card = [[SetCard alloc] init];
-                        card.symbol = symbol;
+                        card.shape = shape;
                         card.number = number;
                         card.shading = shading;
                         card.color = color;
@@ -32,6 +33,7 @@
                     }
                 }
             }
+
         }
     }
     return self;

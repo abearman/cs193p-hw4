@@ -10,8 +10,6 @@
 
 @implementation SetCard
 
-@synthesize symbol = _symbol;
-
 - (BOOL)matchColors:(NSArray *)otherCards  {
     SetCard *card2 = [otherCards firstObject];
     SetCard *card3 = [otherCards objectAtIndex:1];
@@ -24,8 +22,8 @@
 -(BOOL)matchSymbols:(NSArray *)otherCards {
     SetCard *card2 = [otherCards firstObject];
     SetCard *card3 = [otherCards objectAtIndex:1];
-    if (([self.symbol isEqualToString:card2.symbol] && [self.symbol isEqualToString:card3.symbol] && [card2.symbol isEqualToString:card3.symbol]) ||
-        (!([self.symbol isEqualToString:card2.symbol]) && !([self.symbol isEqualToString:card3.symbol]) && !([card2.symbol isEqualToString:card3.symbol]))) {
+    if (((self.shape == card2.shape) && (self.shape == card3.shape) && (card2.shape == card3.shape)) ||
+        (!((self.shape == card2.shape)) && !((self.shape == card3.shape)) && !((card2.shape == card3.shape)))) {
         return true;
     }
     return false;
@@ -56,37 +54,9 @@
     return false;
 }
 
-/* Method to return the contents of the SetCard as an NSString */
+// TODO
 - (NSString *)contents {
-    NSString *color;
-    if (self.color == 0) {
-        color = @"red";
-    } else if (self.color == 1) {
-        color = @"green";
-    } else if (self.color == 2) {
-        color = @"purple";
-    }
-    
-    NSString *shading;
-    if (self.shading == 0) {
-        shading = @"solid";
-    } else if (self.shading == 1) {
-        shading = @"striped";
-    } else if (self.shading == 2) {
-        shading = @"open";
-    }
-    
-    NSString *symbols;
-    if (self.number == 1) {
-        symbols = self.symbol;
-    } else if (self.number == 2) {
-        symbols = [NSString stringWithFormat:@"%@%@", self.symbol, self.symbol];
-    } else if (self.number == 3) {
-        symbols = [NSString stringWithFormat:@"%@%@%@", self.symbol, self.symbol, self.symbol];
-    }
-    
-    NSString *contents = [NSString stringWithFormat:@"%@ %@ %@", symbols, color, shading];
-    return contents;
+    return nil;
 }
     
 /* Match method that matches against 3 cards */
@@ -104,23 +74,6 @@
     }
     
     return score;
-}
-
-+ (NSArray *)validSymbols {
-    return @[@"●", @"■", @"▲"];
-}
-
-
-/* Getter for symbol */
-- (NSString *)symbol {
-    return _symbol ? _symbol : @"?";
-}
-
-/* Setter for symbol */
-- (void)setSymbol: (NSString *)symbol {
-    if ([[SetCard validSymbols] containsObject:symbol]) {
-        _symbol = symbol;
-    }
 }
 
 @end
