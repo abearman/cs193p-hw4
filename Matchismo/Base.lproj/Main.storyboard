@@ -88,19 +88,19 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Bd-dO-y9Y">
-                                <rect key="frame" x="20" y="34" width="280" height="442"/>
+                                <rect key="frame" x="20" y="34" width="280" height="435"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2SU-SF-eul">
-                                <rect key="frame" x="20" y="489" width="280" height="21"/>
+                                <rect key="frame" x="20" y="471" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yox-Bz-nyc">
-                                <rect key="frame" x="166" y="484" width="144" height="32"/>
+                                <rect key="frame" x="166" y="466" width="144" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -112,12 +112,25 @@
                                     <action selector="startNewGame:" destination="yaa-Nf-fQJ" eventType="touchUpInside" id="Ql1-zr-87z"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIX-nj-eRR">
+                                <rect key="frame" x="214" y="488" width="86" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="More Cards">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getThreeMoreCards:" destination="yaa-Nf-fQJ" eventType="touchUpInside" id="Xz4-qh-sdO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Set Card" id="LgQ-Qe-wK0" userLabel="Tab Bar Item - Set Card Game"/>
                     <connections>
                         <outlet property="backgroundView" destination="0Bd-dO-y9Y" id="Ajb-LC-Dbs"/>
+                        <outlet property="moreCards" destination="AIX-nj-eRR" id="maw-39-WRf"/>
                         <outlet property="scoreLabel" destination="2SU-SF-eul" id="9FN-Sl-r5a"/>
                         <outlet property="startNewGame" destination="yox-Bz-nyc" id="dYL-Sf-mmp"/>
                     </connections>

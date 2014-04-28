@@ -109,7 +109,7 @@ depending on whether or not the card was flipped over */
 }
 
 - (NSUInteger)minimumNumberOfCards {
-    return 30;
+    return 36;
 }
 
 @end
