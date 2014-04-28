@@ -29,9 +29,9 @@
         if (self.shape == SQUIGGLE) {
             
         } else if (self.shape == DIAMOND) {
-            [self drawDiamondWithBounds:boundsOfShapes withColor:self.color];
+            [self drawDiamondWithBounds:boundsOfShapes];
         } else if (self.shape == OVAL) {
-            [self drawOvalWithBounds:boundsOfShapes withColor:self.color];
+            [self drawOvalWithBounds:boundsOfShapes];
         }
 
     } else if (self.number == 2) {
@@ -44,11 +44,11 @@
         if (self.shape == SQUIGGLE) {
             
         } else if (self.shape == DIAMOND) {
-            [self drawDiamondWithBounds:boundsOfShapes1 withColor:self.color];
-            [self drawDiamondWithBounds:boundsOfShapes2 withColor:self.color];
+            [self drawDiamondWithBounds:boundsOfShapes1];
+            [self drawDiamondWithBounds:boundsOfShapes2];
         } else if (self.shape == OVAL) {
-            [self drawOvalWithBounds:boundsOfShapes1 withColor:self.color];
-            [self drawOvalWithBounds:boundsOfShapes2 withColor:self.color];
+            [self drawOvalWithBounds:boundsOfShapes1];
+            [self drawOvalWithBounds:boundsOfShapes2];
         }
         
     } else if (self.number == 3) {
@@ -63,24 +63,23 @@
         if (self.shape == SQUIGGLE) {
             
         } else if (self.shape == DIAMOND) {
-            [self drawDiamondWithBounds:boundsOfShapes1 withColor:self.color];
-            [self drawDiamondWithBounds:boundsOfShapes2 withColor:self.color];
-            [self drawDiamondWithBounds:boundsOfShapes3 withColor:self.color];
+            [self drawDiamondWithBounds:boundsOfShapes1];
+            [self drawDiamondWithBounds:boundsOfShapes2];
+            [self drawDiamondWithBounds:boundsOfShapes3];
         } else if (self.shape == OVAL) {
-            [self drawOvalWithBounds:boundsOfShapes1 withColor:self.color];
-            [self drawOvalWithBounds:boundsOfShapes2 withColor:self.color];
-            [self drawOvalWithBounds:boundsOfShapes3 withColor:self.color];
+            [self drawOvalWithBounds:boundsOfShapes1];
+            [self drawOvalWithBounds:boundsOfShapes2];
+            [self drawOvalWithBounds:boundsOfShapes3];
         }
     }
 }
 
-- (void)drawOvalWithBounds: (CGRect)bounds withColor:(UIColor *)color {
+- (void)drawOvalWithBounds: (CGRect)bounds {
     UIBezierPath *oval = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:10.0];
-    [color setFill];
-    [oval fill];
+    [self setShadingOfShape:oval];
 }
 
-- (void)drawDiamondWithBounds: (CGRect)bounds withColor:(UIColor *)color {
+- (void)drawDiamondWithBounds: (CGRect)bounds {
     UIBezierPath *diamond = [[UIBezierPath alloc] init];
     double x = bounds.origin.x;
     double y = bounds.origin.y;
@@ -92,8 +91,20 @@
     [diamond addLineToPoint:CGPointMake(x + width, y + height/2)];
     [diamond addLineToPoint:CGPointMake(x + width/2, y + height)];
     [diamond closePath];
-    [color setFill];
-    [diamond fill];
+    [self setShadingOfShape:diamond];
+}
+
+- (void)setShadingOfShape: (UIBezierPath *)path {
+    if (self.shading == SOLID) {
+        [self.color setFill];
+        [path fill];
+    } else if (self.shading == STRIPED) { // TODO
+        [self.color setFill];
+        [path fill];
+    } else if (self.shading == OPEN) {
+        [self.color setStroke];
+        [path stroke];
+    }
 }
 
 //////////////////////////////////////
