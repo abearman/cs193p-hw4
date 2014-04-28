@@ -55,7 +55,6 @@
  * Action method to handle the event that the user clicks on "Start New Game"
  */
 - (IBAction)startNewGame:(UIButton *)sender {
-    [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
     [self updateAllCards];
     
@@ -67,6 +66,7 @@
                              view.frame = CGRectOffset(view.frame, 0, 500);
                          }
                          completion:^(BOOL finished) {
+                             [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
                              [self redrawCards];
                              view.frame = CGRectOffset(view.frame, 0, -1000);
                              [UIView animateWithDuration:1.0 

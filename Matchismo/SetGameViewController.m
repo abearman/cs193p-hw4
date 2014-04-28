@@ -38,6 +38,13 @@
 - (void)reinitializeGame {
     [super reinitializeGame];
     self.game.gameMode = 1;
+    self.grid.minimumNumberOfCells = 12;
+    for (int i = 12; i < [self.cardViews count]; i++) {
+        SetCardView *scView = [self.cardViews lastObject];
+        [scView removeFromSuperview];
+        [self.cardViews removeLastObject];
+    }
+
 }
 
 - (void) setUpCards {
