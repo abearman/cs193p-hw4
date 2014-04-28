@@ -45,7 +45,7 @@ static const int COST_TO_CHOOSE = 1;
     
     // Don't let background clicks mess us up
     
-    if (index < 0 || index >= [self cardCount]) return;
+    if (index >= [self cardCount]) return;
     
     [self.lastCards removeAllObjects]; // Clears the array of selected cards for this round
     Card *card = [self cardAtIndex:index]; // Retrieves the Card object corresponding to the card button clicked
