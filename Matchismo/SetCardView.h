@@ -20,6 +20,6 @@
 // These three use the enum declared in SetCard
 @property (nonatomic) Shape shape; // squiggle, diamond, oval
 @property (nonatomic) Shading shading; // solid, striped, open
-@property (nonatomic) Color color; // red, green, purple
+@property (nonatomic, strong) UIColor *color; // red, green, purple
 
 @end

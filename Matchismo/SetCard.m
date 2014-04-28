@@ -58,6 +58,10 @@
 - (NSString *)contents {
     return nil;
 }
+
++ (NSArray *)validColors {
+    return @[[UIColor redColor], [UIColor greenColor], [UIColor purpleColor]];
+}
     
 /* Match method that matches against 3 cards */
 - (int) match:(NSArray *)otherCards {

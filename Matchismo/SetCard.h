@@ -11,7 +11,8 @@
 @interface SetCard : Card
 
 // 4 properties:
-@property (nonatomic) NSUInteger number;        // One, two, or three
+@property (nonatomic) NSUInteger number;        // one, two, three
+@property (nonatomic, strong) UIColor *color; // red, green, purple
 
 typedef enum {
     SOLID,
@@ -21,17 +22,12 @@ typedef enum {
 @property (nonatomic) Shading shading;
 
 typedef enum {
-    RED,
-    GREEN,
-    PURPLE
-} Color;
-@property (nonatomic) Color color;
-
-typedef enum {
     SQUIGGLE,
     DIAMOND,
     OVAL
 } Shape;
 @property (nonatomic) Shape shape;
+
++ (NSArray *)validColors;
 
 @end

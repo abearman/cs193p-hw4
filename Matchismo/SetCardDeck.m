@@ -23,7 +23,7 @@
         for (int shape = SQUIGGLE; shape <= OVAL; shape++) {
             for (int number = 1; number <= 3; number++) {
                 for (int shading = SOLID; shading <= OPEN; shading++) {
-                    for (int color = RED; color <= PURPLE; color++) {
+                    for (UIColor *color in [SetCard validColors]) {
                         SetCard *card = [[SetCard alloc] init];
                         card.shape = shape;
                         card.number = number;
