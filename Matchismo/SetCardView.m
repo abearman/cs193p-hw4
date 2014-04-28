@@ -25,12 +25,7 @@
     if (self.number == 1) {
         double yOfShape = y + (height/2.0) - (heightOfShape/2.0);
         CGRect boundsOfShapes = CGRectMake(xOfShape, yOfShape, widthOfShape, heightOfShape);
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:boundsOfShapes cornerRadius:10.0];
-        [[UIColor redColor] setFill];
-        [[UIColor redColor] setStroke];
-        
-        [path stroke];
-        [path fill];
+        [self drawOvalWithBounds:boundsOfShapes withColor:self.color];
         
     } else if (self.number == 2) {
         double yOfShape1 = y + (height/2.0) - ((2.33*heightOfShape)/2.0);
@@ -38,14 +33,8 @@
         
         CGRect boundsOfShapes1 = CGRectMake(xOfShape, yOfShape1, widthOfShape, heightOfShape);
         CGRect boundsOfShapes2 = CGRectMake(xOfShape, yOfShape2, widthOfShape, heightOfShape);
-        UIBezierPath *path1 = [UIBezierPath bezierPathWithRoundedRect:boundsOfShapes1 cornerRadius:10.0];
-        UIBezierPath *path2 = [UIBezierPath bezierPathWithRoundedRect:boundsOfShapes2 cornerRadius:10.0];
-        
-        [[UIColor redColor] setFill];
-        [[UIColor redColor] setStroke];
-        
-        [path1 fill];
-        [path2 fill];
+        [self drawOvalWithBounds:boundsOfShapes1 withColor:self.color];
+        [self drawOvalWithBounds:boundsOfShapes2 withColor:self.color];
         
     } else if (self.number == 3) {
         double yOfShape1 = (height/2.0) - ((3.67*heightOfShape)/2.0);
@@ -55,21 +44,20 @@
         CGRect boundsOfShapes1 = CGRectMake(xOfShape, yOfShape1, widthOfShape, heightOfShape);
         CGRect boundsOfShapes2 = CGRectMake(xOfShape, yOfShape2, widthOfShape, heightOfShape);
         CGRect boundsOfShapes3 = CGRectMake(xOfShape, yOfShape3, widthOfShape, heightOfShape);
-        UIBezierPath *path1 = [UIBezierPath bezierPathWithRoundedRect:boundsOfShapes1 cornerRadius:10.0];
-        UIBezierPath *path2 = [UIBezierPath bezierPathWithRoundedRect:boundsOfShapes2 cornerRadius:10.0];
-        UIBezierPath *path3 = [UIBezierPath bezierPathWithRoundedRect:boundsOfShapes3 cornerRadius:10.0];
-        
-        [[UIColor redColor] setFill];
-        [[UIColor redColor] setStroke];
-        
-        [path1 fill];
-        [path2 fill];
-        [path3 fill];
+        [self drawOvalWithBounds:boundsOfShapes1 withColor:self.color];
+        [self drawOvalWithBounds:boundsOfShapes2 withColor:self.color];
+        [self drawOvalWithBounds:boundsOfShapes3 withColor:self.color];
     }
 }
 
-- (UIBezierPath *)drawOval {
-    return nil;
+- (UIBezierPath *)drawOvalWithBounds: (CGRect)bounds {
+    return [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:10.0];
+}
+
+- (void)drawOvalWithBounds: (CGRect)bounds withColor:(UIColor *)color {
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:10.0];
+    [color setFill];
+    [path fill];
 }
 
 //////////////////////////////////////
