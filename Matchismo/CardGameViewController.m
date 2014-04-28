@@ -34,7 +34,7 @@
     return [[PlayingCardDeck alloc] init];
 }
 
-- (void) drawCardViews {
+- (void) setUpCards {
     int index = 0;
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
@@ -54,7 +54,7 @@
     }
 }
 
-- (void)updateAllCardsChosenOrMatched {
+- (void)updateAllCards {
     for (PlayingCardView *pcView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
@@ -66,24 +66,6 @@
     }
 }
 
-- (void)flipAllCards {
-    for (PlayingCardView *pcView in self.cardViews) {
-        if (pcView.faceUp) {
-            [self animateCardFlippingWithCard:pcView withSide:NO];
-        }
-    }
-}
-
-- (void) redrawCardViewsWithNewContents {
-    int index = 0;
-    for (PlayingCardView *pcView in self.cardViews) {
-        PlayingCard *playingCard = (PlayingCard *)[self.game cardAtIndex:index];
-        pcView.suit = playingCard.suit;
-        pcView.rank = playingCard.rank;
-        index++;
-    }
-}
-
 - (void)animateCardFlippingWithCard:(PlayingCardView *)pcView withSide:(BOOL)isFaceUp {
     [PlayingCardView transitionWithView:pcView
                                duration:0.5
@@ -91,6 +73,16 @@
                              animations:^{
                                  pcView.faceUp = isFaceUp;
                              } completion:nil];
+}
+
+- (void) redrawCards {
+    int index = 0;
+    for (PlayingCardView *pcView in self.cardViews) {
+        PlayingCard *playingCard = (PlayingCard *)[self.game cardAtIndex:index];
+        pcView.suit = playingCard.suit;
+        pcView.rank = playingCard.rank;
+        index++;
+    }
 }
 
 - (NSMutableAttributedString *)getCardAttributedContents:(Card *)card {
@@ -105,7 +97,7 @@
 }
 
 /* Helper method that returns the title of a card: either its contents, or the empty string,
-depending on whether or not the card was flipped over */
+ depending on whether or not the card was flipped over */
 - (NSMutableAttributedString *)titleForCard:(Card *)card {
     NSMutableAttributedString *contents = [self getCardAttributedContents:card];
     return card.isChosen ? contents: [[NSMutableAttributedString alloc] initWithString:@""];
@@ -116,5 +108,8 @@ depending on whether or not the card was flipped over */
     return [UIImage imageNamed:card.isChosen ? @"cardfront": @"cardback"];
 }
 
+- (NSUInteger)minimumNumberOfCards {
+    return 36;
+}
 
 @end

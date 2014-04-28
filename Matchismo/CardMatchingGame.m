@@ -36,9 +36,17 @@ static const int MISMATCH_PENALTY = 2;
 static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
+- (NSUInteger)cardCount {
+    return [[self cards] count];
+}
+
 /* Guts of the algorithm for selecting and matching cards */
 - (void)chooseCardAtIndex:(NSUInteger)index {
-
+    
+    // Don't let background clicks mess us up
+    
+    if (index < 0 || index >= [self cardCount]) return;
+    
     [self.lastCards removeAllObjects]; // Clears the array of selected cards for this round
     Card *card = [self cardAtIndex:index]; // Retrieves the Card object corresponding to the card button clicked
     [self.lastCards addObject:card]; //Adds the initial clicked card to the array of selected cards
@@ -51,8 +59,8 @@ static const int COST_TO_CHOOSE = 1;
         if (card.isChosen) {
             card.chosen = NO;
             [self.lastCards removeObject:card];
-        
-        // Otherwise, compare the selected card against other currently selected cards
+            
+            // Otherwise, compare the selected card against other currently selected cards
         } else {
             
             // Stores the other selected AND unmatched cards in an array
@@ -74,8 +82,8 @@ static const int COST_TO_CHOOSE = 1;
                     for (Card *otherCard in cardsToCompare) {
                         otherCard.matched = YES;
                     }
-                
-                // Calculates the mismatch penalty, and sets all selected cards as unchosen
+                    
+                    // Calculates the mismatch penalty, and sets all selected cards as unchosen
                 } else {
                     self.score -= MISMATCH_PENALTY;
                     for (Card *otherCard in cardsToCompare) {
@@ -97,14 +105,14 @@ static const int COST_TO_CHOOSE = 1;
     return (index < [self.cards count]) ? self.cards[index] : nil;
 }
 
-/* 
- * Designated initializer for CardMatchingGame that initializes the object with a given 
+/*
+ * Designated initializer for CardMatchingGame that initializes the object with a given
  * number of cards and using the specified deck. Draws "count" number of cards from this deck
  */
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(id)deck {
     self = [super init];
     self.deck = deck;
-   
+    
     if (self) {
         if (count >= 2) {
             for (int i = 0; i < count; i++) {
@@ -120,6 +128,17 @@ static const int COST_TO_CHOOSE = 1;
     }
     
     return self;
+}
+
+- (void)drawMoreCards:(NSUInteger)number {
+    for (int i = 0; i < number; i++) {
+        Card *card = [self.deck drawRandomCard];
+        if (card) {
+            [self.cards addObject:card];
+        } else {
+            break;
+        }
+    }
 }
 
 - (instancetype) init { //They can't call [[CardMatchingGame alloc] init]

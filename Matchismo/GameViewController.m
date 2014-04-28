@@ -30,20 +30,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:36 // Initialize the CardMatchingGame
-                                                          usingDeck: [self createDeck]];
-    
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
-    
     self.grid = [[Grid alloc] init];
     [self setUpGrid];
-    [self drawCardViews];
-    [self addGestureRecognizers];
-}
-
-// Helper method to add gesture recognizers
-- (void)addGestureRecognizers {
+    [self setUpCards];
+    
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
     self.tapRecognizer.numberOfTapsRequired = 1;
     [self.backgroundView addGestureRecognizer:self.tapRecognizer];
@@ -54,6 +46,11 @@
     self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
     [self.backgroundView addGestureRecognizer:self.panRecognizer];
     [self.panRecognizer setMaximumNumberOfTouches:1];
+    
+    // Start a new game
+    
+    [self reinitializeGame];
+    [self redrawCards];
 }
 
 /*
@@ -61,10 +58,10 @@
  */
 - (IBAction)startNewGame:(UIButton *)sender {
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
-    [self updateAllCardsChosenOrMatched];
-    [self flipAllCards];
+    [self updateAllCards];
     
     double i = 0.0;
+    __block BOOL redrawn = NO;
     for (UIView *view in self.cardViews) {
         [UIView animateWithDuration:1.0 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count])
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -72,10 +69,13 @@
                              view.frame = CGRectOffset(view.frame, 0, 500);
                          }
                          completion:^(BOOL finished) {
-                             [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
-                             [self redrawCardViewsWithNewContents];
+                             if (!redrawn) {
+                                 [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
+                                 [self redrawCards];
+                                 redrawn = YES;
+                             }
                              view.frame = CGRectOffset(view.frame, 0, -1000);
-                             [UIView animateWithDuration:1.0 
+                             [UIView animateWithDuration:1.0
                                                    delay:1.0
                                                  options:UIViewAnimationOptionCurveEaseInOut
                                               animations:^{
@@ -83,8 +83,8 @@
                                               }
                                               completion:nil
                               ];
-                                      
-         }];
+                             
+                         }];
     }
 }
 
@@ -92,10 +92,10 @@
     self.cardsInStack = YES;
     for (UIView *view in self.cardViews) {
         [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
-                                  animations:^{
-                                      view.frame = CGRectMake(10, 10, view.frame.size.width, view.frame.size.height);
-                                  }
-                                  completion:nil];
+                         animations:^{
+                             view.frame = CGRectMake(10, 10, view.frame.size.width, view.frame.size.height);
+                         }
+                         completion:nil];
     }
 }
 
@@ -133,11 +133,11 @@
                 jdex++;
                 
                 [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
-                                          animations:^{
-                                              CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                                              view.frame = viewRect;
-                                          }
-                                          completion:nil];
+                                 animations:^{
+                                     CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                     view.frame = viewRect;
+                                 }
+                                 completion:nil];
             }
         }
         self.cardsInStack = false;
@@ -145,10 +145,9 @@
     } else {
         CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
         UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
-        int chosenCardIndex = (int)[self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
-        
+        NSUInteger chosenCardIndex = [self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
         [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
-        [self updateAllCardsChosenOrMatched]; // Should update the UI of all card views appropriately, handled by the subclasses
+        [self updateAllCards]; // Should update the UI of all card views appropriately, handled by the subclasses
         self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
     }
 }
@@ -171,18 +170,15 @@
     CGFloat height = self.backgroundView.frame.size.height;
     self.grid.size = CGSizeMake(width, height);
     self.grid.cellAspectRatio = 0.67;
-    
-    if ([self isKindOfClass:[CardGameViewController class]]) {
-        self.grid.minimumNumberOfCells = 36;
-    } else if ([self isKindOfClass:[SetGameViewController class]]) {
-        self.grid.minimumNumberOfCells = 12;
-    }
+    self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
 }
 
-- (void) drawCardViews { }
-- (void) flipAllCards { }
-- (void)updateAllCardsChosenOrMatched { }
-- (void) redrawCardViewsWithNewContents { }
+- (NSUInteger) minimumNumberOfCards {
+    return 0;
+}
+- (void) setUpCards { }
+- (void)updateAllCards { }
+- (void) redrawCards { }
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
 - (UIImage *)backgroundImageForCard:(Card *)card { return nil; }
 - (Deck *)createDeck { return nil; }

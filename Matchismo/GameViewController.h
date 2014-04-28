@@ -19,4 +19,12 @@
 
 - (void)reinitializeGame;
 
+// Methods to be overriden by subclasses:
+- (NSAttributedString *)titleForCard: (Card *)card;
+- (UIImage *)backgroundImageForCard:(Card *)card;
+- (Deck *)createDeck;
+- (void) setUpCards;
+- (void) redrawCards;
+- (NSUInteger) minimumNumberOfCards;
+
 @end
