@@ -59,14 +59,16 @@
     [self updateAllCards];
     [self redrawCards];
     
+    double i = 0.0;
     for (UIView *view in self.cardViews) {
-        [UIView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationOptionCurveEaseInOut
+        [UIView animateWithDuration:1.0 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count]) options:UIViewAnimationOptionCurveEaseInOut
                                   animations:^{
                                       view.frame = CGRectOffset(view.frame, 0, 500);
                                   }
-                                  completion:^(BOOL finished) {
-                                      [UIView animateWithDuration:1.0 delay:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                                            view.frame = CGRectOffset(view.frame, 0, -500);
+                                completion:^(BOOL finished) {
+                                        view.frame = CGRectOffset(view.frame, 0, -1000);
+                                      [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                                            view.frame = CGRectOffset(view.frame, 0, 500);
                                           }
                                       completion:nil];
                                       

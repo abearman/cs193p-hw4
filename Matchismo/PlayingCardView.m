@@ -70,10 +70,7 @@
     NSMutableAttributedString *cornerText = [[NSMutableAttributedString alloc] initWithString:contents
                                                                      attributes:@{ NSParagraphStyleAttributeName : paragraphStyle,
                                                                                    NSFontAttributeName : cornerFont }];
-    if ([suit isEqualToString:@"♥︎"]) {
-        [cornerText addAttribute:NSForegroundColorAttributeName value: [UIColor redColor] range:NSMakeRange(0, [contents length])];
-    }
-    if ([suit isEqualToString:@"♦︎"]) {
+    if ([suit isEqualToString:@"♥︎"] || [suit isEqualToString:@"♦︎"]) {
         [cornerText addAttribute:NSForegroundColorAttributeName value: [UIColor redColor] range:NSMakeRange(0, [contents length])];
     }
     
@@ -149,10 +146,7 @@
     pipFont = [pipFont fontWithSize:[pipFont pointSize] * self.bounds.size.width * PIP_FONT_SCALE_FACTOR];
     NSMutableAttributedString *attributedSuit = [[NSMutableAttributedString alloc] initWithString:self.suit attributes:@{ NSFontAttributeName : pipFont }];
     
-    if ([self.suit isEqualToString:@"♥︎"]) {
-        [attributedSuit addAttribute:NSForegroundColorAttributeName value: [UIColor redColor] range:NSMakeRange(0, [attributedSuit length])];
-    }
-    if ([self.suit isEqualToString:@"♦︎"]) {
+    if ([self.suit isEqualToString:@"♥︎"] || [self.suit isEqualToString:@"♦︎"]) {
         [attributedSuit addAttribute:NSForegroundColorAttributeName value: [UIColor redColor] range:NSMakeRange(0, [attributedSuit length])];
     }
     
