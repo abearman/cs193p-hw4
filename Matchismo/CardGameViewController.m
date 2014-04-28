@@ -108,5 +108,8 @@ depending on whether or not the card was flipped over */
     return [UIImage imageNamed:card.isChosen ? @"cardfront": @"cardback"];
 }
 
+- (NSUInteger)minimumNumberOfCards {
+    return 30;
+}
 
 @end

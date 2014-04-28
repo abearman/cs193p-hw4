@@ -29,9 +29,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:36 // Initialize the CardMatchingGame
-                                                          usingDeck: [self createDeck]];
+
+    // Set score to 0
     
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
@@ -49,6 +48,11 @@
     self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
     [self.backgroundView addGestureRecognizer:self.panRecognizer];
     [self.panRecognizer setMaximumNumberOfTouches:1];
+
+    // Start a new game
+
+    [self reinitializeGame];
+    [self redrawCards];
 }
 
 /*
@@ -139,10 +143,8 @@
     } else {
         CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
         UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
-        
-        SetCardView *scv = (SetCardView *)tappedView;
-        
-        int chosenCardIndex = (int)[self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
+
+        NSUInteger chosenCardIndex = [self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
         [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
         [self updateAllCards]; // Should update the UI of all card views appropriately, handled by the subclasses
         self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
@@ -167,14 +169,12 @@
     CGFloat height = self.backgroundView.frame.size.height;
     self.grid.size = CGSizeMake(width, height);
     self.grid.cellAspectRatio = 0.67;
-    
-    if ([self isKindOfClass:[CardGameViewController class]]) {
-        self.grid.minimumNumberOfCells = 30;
-    } else if ([self isKindOfClass:[SetGameViewController class]]) {
-        self.grid.minimumNumberOfCells = 12;
-    }
+    self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
 }
 
+- (NSUInteger) minimumNumberOfCards {
+    return 0;
+}
 - (void) setUpCards { }
 - (void)updateAllCards { }
 - (void) redrawCards { }

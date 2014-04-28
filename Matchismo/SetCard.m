@@ -11,47 +11,31 @@
 @implementation SetCard
 
 - (BOOL)matchColors:(NSArray *)otherCards  {
-    SetCard *card2 = [otherCards firstObject];
+    SetCard *card2 = [otherCards objectAtIndex:0];
     SetCard *card3 = [otherCards objectAtIndex:1];
-    if (((self.color == card2.color) && (self.color == card3.color) && (card2.color == card3.color)) || ((self.color != card2.color) && (self.color != card3.color) && (card2.color != card3.color))) {
-        return true;
-    }
-    return false;
+    return ([self.color isEqual:card2.color] && [self.color isEqual:card3.color]) || (![self.color isEqual:card2.color] && ![self.color isEqual:card3.color] && ![card2.color isEqual:card3.color]);
 }
 
 -(BOOL)matchSymbols:(NSArray *)otherCards {
-    SetCard *card2 = [otherCards firstObject];
+    SetCard *card2 = [otherCards objectAtIndex:0];
     SetCard *card3 = [otherCards objectAtIndex:1];
-    if (((self.shape == card2.shape) && (self.shape == card3.shape) && (card2.shape == card3.shape)) ||
-        (!((self.shape == card2.shape)) && !((self.shape == card3.shape)) && !((card2.shape == card3.shape)))) {
-        return true;
-    }
-    return false;
+    return ((self.shape == card2.shape) && (self.shape == card3.shape)) || ((self.shape != card2.shape) && (self.shape != card3.shape) && (card2.shape != card3.shape));
 }
 
 -(BOOL)matchNumbers:(NSArray *)otherCards {
-    SetCard *card2 = [otherCards firstObject];
+    SetCard *card2 = [otherCards objectAtIndex:0];
     SetCard *card3 = [otherCards objectAtIndex:1];
-    if (((self.number == card2.number) && (self.number == card3.number) && (card2.number == card3.number)) || ((self.number != card2.number) && (self.number != card3.number) && (card2.number != card3.number))) {
-        return true;
-    }
-    return false;
+    return ((self.number == card2.number) && (self.number == card3.number)) || ((self.number != card2.number) && (self.number != card3.number) && (card2.number != card3.number));
 }
 
 -(BOOL)matchShadings:(NSArray *)otherCards {
-    SetCard *card2 = [otherCards firstObject];
+    SetCard *card2 = [otherCards objectAtIndex:0];
     SetCard *card3 = [otherCards objectAtIndex:1];
-    if (((self.shading == card2.shading) && (self.shading == card3.shading) && (card2.shading == card3.shading)) || ((self.shading != card2.shading) && (self.shading != card3.shading) && (card2.shading != card3.shading))) {
-        return true;
-    }
-    return false;
+    return ((self.shading == card2.shading) && (self.shading == card3.shading)) || ((self.shading != card2.shading) && (self.shading != card3.shading) && (card2.shading != card3.shading));
 }
 
 - (BOOL)areAllSameOrDifferent: (NSArray *)otherCards {
-    if ([self matchColors:otherCards] && [self matchSymbols:otherCards] && [self matchNumbers:otherCards] && [self matchShadings:otherCards]) {
-        return true;
-    }
-    return false;
+    return ([self matchColors:otherCards] && [self matchSymbols:otherCards] && [self matchNumbers:otherCards] && [self matchShadings:otherCards]);
 }
 
 // TODO

@@ -41,7 +41,7 @@
 - (void) setUpCards {
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
-            Card *card = [self.game.deck drawRandomCard];
+            Card *card = [self.game cardAtIndex:i];
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
             SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
 
@@ -82,6 +82,10 @@
         scView.color = setCard.color;
         index++;
     }
+}
+
+- (NSUInteger)minimumNumberOfCards {
+    return 12;
 }
 
 @end
