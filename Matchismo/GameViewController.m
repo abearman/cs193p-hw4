@@ -35,10 +35,15 @@
     
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
+    
     self.grid = [[Grid alloc] init];
     [self setUpGrid];
-    [self setUpCards];
-    
+    [self drawCardViews];
+    [self addGestureRecognizers];
+}
+
+// Helper method to add gesture recognizers
+- (void)addGestureRecognizers {
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
     self.tapRecognizer.numberOfTapsRequired = 1;
     [self.backgroundView addGestureRecognizer:self.tapRecognizer];
@@ -56,7 +61,8 @@
  */
 - (IBAction)startNewGame:(UIButton *)sender {
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
-    [self updateAllCards];
+    [self updateAllCardsChosenOrMatched];
+    [self flipAllCards];
     
     double i = 0.0;
     for (UIView *view in self.cardViews) {
@@ -67,7 +73,7 @@
                          }
                          completion:^(BOOL finished) {
                              [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
-                             [self redrawCards];
+                             [self redrawCardViewsWithNewContents];
                              view.frame = CGRectOffset(view.frame, 0, -1000);
                              [UIView animateWithDuration:1.0 
                                                    delay:1.0
@@ -140,8 +146,9 @@
         CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
         UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
         int chosenCardIndex = (int)[self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
+        
         [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
-        [self updateAllCards]; // Should update the UI of all card views appropriately, handled by the subclasses
+        [self updateAllCardsChosenOrMatched]; // Should update the UI of all card views appropriately, handled by the subclasses
         self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
     }
 }
@@ -172,9 +179,10 @@
     }
 }
 
-- (void) setUpCards { }
-- (void)updateAllCards { }
-- (void) redrawCards { }
+- (void) drawCardViews { }
+- (void) flipAllCards { }
+- (void)updateAllCardsChosenOrMatched { }
+- (void) redrawCardViewsWithNewContents { }
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
 - (UIImage *)backgroundImageForCard:(Card *)card { return nil; }
 - (Deck *)createDeck { return nil; }

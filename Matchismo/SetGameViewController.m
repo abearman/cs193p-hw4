@@ -44,17 +44,16 @@
         [scView removeFromSuperview];
         [self.cardViews removeLastObject];
     }
-
 }
 
-- (void) setUpCards {
-    int numCards = 0;
+- (void) drawCardViews {
+    int index = 0;
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
-            if (numCards >= self.grid.minimumNumberOfCells) break;
-            numCards++;
+            if (index >= self.grid.minimumNumberOfCells) break;
+            index++;
             
-            Card *card = [self.game.deck drawRandomCard];
+            Card *card = [self.game cardAtIndex:index];
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
             SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
 
@@ -101,34 +100,35 @@
             if (index < numOriginalCards) {
                 // Use existing SetCardView
                 scView = [self.cardViews objectAtIndex:index];
-                scView.frame = viewRect; // Readjust frame of existing SetCardView
             } else {
                 scView = [setCardViews lastObject];
                 [setCardViews removeLastObject];
-                scView.frame = viewRect;
                 [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
             }
+            scView.frame = viewRect; // Readjust frame
             index++;
             [self.backgroundView addSubview:scView];
         }
     }
 }
 
-- (void)updateAllCards {
+- (void)updateAllCardsChosenOrMatched {
     for (SetCardView *scView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:scView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
-        if (card.isChosen) {
+        if (card.isChosen && !scView.chosen) {
             scView.chosen = YES;
             [scView setNeedsDisplay];
-        } else {
+        } else if (!card.isChosen && scView.chosen) {
             scView.chosen = NO;
             [scView setNeedsDisplay];
         }
     }
 }
 
-- (void) redrawCards {
+- (void) flipAllCards { }
+
+- (void) redrawCardViewsWithNewContents {
     int index = 0;
     for (SetCardView *scView in self.cardViews) {
         SetCard *setCard = (SetCard *)[self.game cardAtIndex:index];
