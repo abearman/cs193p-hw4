@@ -139,9 +139,6 @@
     } else {
         CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
         UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
-        
-        SetCardView *scv = (SetCardView *)tappedView;
-        
         int chosenCardIndex = (int)[self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
         [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
         [self updateAllCards]; // Should update the UI of all card views appropriately, handled by the subclasses
@@ -169,7 +166,7 @@
     self.grid.cellAspectRatio = 0.67;
     
     if ([self isKindOfClass:[CardGameViewController class]]) {
-        self.grid.minimumNumberOfCells = 30;
+        self.grid.minimumNumberOfCells = 36;
     } else if ([self isKindOfClass:[SetGameViewController class]]) {
         self.grid.minimumNumberOfCells = 12;
     }
