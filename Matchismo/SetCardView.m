@@ -84,7 +84,19 @@
 }
 
 - (void)drawSquiggleWithBounds: (CGRect)bounds {
-    UIBezierPath *squiggle = [UIBezierPath bezierPathWithOvalInRect:bounds];
+    UIBezierPath *squiggle = [UIBezierPath bezierPath];
+    [squiggle moveToPoint:CGPointMake(bounds.origin.x+(bounds.size.width/4), bounds.origin.y+(bounds.size.height/4))];
+    // Curved top line
+    [squiggle addQuadCurveToPoint:CGPointMake(bounds.origin.x+(bounds.size.width/2), bounds.origin.y+(bounds.size.height)/4) controlPoint:CGPointMake(bounds.origin.x+(3*bounds.size.width/8), bounds.origin.y)];
+    [squiggle addQuadCurveToPoint:CGPointMake(bounds.origin.x+(3*bounds.size.width/4), bounds.origin.y+(bounds.size.height)/4) controlPoint:CGPointMake(bounds.origin.x+(5*(bounds.size.width/8)), bounds.origin.y+3*bounds.size.height/8)];
+    // Curved bump at right
+    [squiggle addQuadCurveToPoint:CGPointMake(bounds.origin.x+(3*bounds.size.width/4), bounds.origin.y+(bounds.size.height*3/4)) controlPoint:CGPointMake(bounds.origin.x+bounds.size.width, bounds.origin.y+bounds.size.height/8)];
+    // Curved bottom line
+    [squiggle addQuadCurveToPoint:CGPointMake(bounds.origin.x+(bounds.size.width/2), bounds.origin.y+3*(bounds.size.height)/4) controlPoint:CGPointMake(bounds.origin.x+(5*(bounds.size.width/8)), bounds.origin.y+bounds.size.height)];
+    [squiggle addQuadCurveToPoint:CGPointMake(bounds.origin.x+bounds.size.width/4, bounds.origin.y+3*(bounds.size.height)/4) controlPoint:CGPointMake(bounds.origin.x+(3*bounds.size.width/8), bounds.origin.y+5*bounds.size.height/8)];
+    // Curved bump at left
+    [squiggle addQuadCurveToPoint:CGPointMake(bounds.origin.x+(bounds.size.width/4), bounds.origin.y+(bounds.size.height)/4) controlPoint:CGPointMake(bounds.origin.x, bounds.origin.y+7*bounds.size.height/8)];
+    [squiggle closePath];
     [self setShadingAndColor:squiggle];
 }
 
@@ -109,12 +121,18 @@
 }
 
 - (void)setShadingAndColor: (UIBezierPath *)path {
+    [self.color setFill];
     if (self.shading == SOLID) {
-        [self.color setFill];
         [path fill];
-    } else if (self.shading == STRIPED) { // TODO
-        [self.color setFill];
-        [path fill];
+    } else if (self.shading == STRIPED) {
+        CGContextSaveGState(UIGraphicsGetCurrentContext()); {
+            [path addClip];
+            CGContextRotateCTM(UIGraphicsGetCurrentContext(), M_PI/4); // Draw all the lines diagonally
+            for (int i = -1000; i < 1000; i++) {
+                CGRect rect = {i*2,-1000,1,2000};
+                [[UIBezierPath bezierPathWithRect:rect] fill];
+            }
+        } CGContextRestoreGState(UIGraphicsGetCurrentContext());
     } else if (self.shading == OPEN) {
         // Do nothing, because we'll set the stroke later
     }
