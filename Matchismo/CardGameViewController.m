@@ -54,6 +54,16 @@
     }
 }
 
+- (void) flipAllCards {
+    for (PlayingCardView *pcView in self.cardViews) {
+        NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
+        Card *card = [self.game cardAtIndex:cardViewIndex];
+        if (card.isChosen) {
+            [self animateCardFlippingWithCard:pcView withSide:NO];
+        }
+    }
+}
+
 - (void)updateAllCards {
     for (PlayingCardView *pcView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];

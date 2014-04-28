@@ -59,6 +59,7 @@
 - (IBAction)startNewGame:(UIButton *)sender {
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
     [self updateAllCards];
+    [self flipAllCards];
     
     double i = 0.0;
     __block BOOL redrawn = NO;
@@ -177,6 +178,7 @@
     return 0;
 }
 - (void) setUpCards { }
+- (void) flipAllCards { }
 - (void)updateAllCards { }
 - (void) redrawCards { }
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
