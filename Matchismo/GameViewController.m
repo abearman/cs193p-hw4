@@ -12,6 +12,7 @@
 #import "PlayingCardView.h"
 #import "CardGameViewController.h"
 #import "SetGameViewController.h"
+#import "SetCardView.h"
 
 @interface GameViewController ()
 
@@ -138,6 +139,8 @@
     } else {
         CGPoint point = [self.tapRecognizer locationInView:self.backgroundView];
         UIView *tappedView = [self.backgroundView hitTest:point withEvent:nil];
+        
+        SetCardView *scv = (SetCardView *)tappedView;
         
         int chosenCardIndex = (int)[self.cardViews indexOfObject:tappedView]; // Retrieves the index of the chosen card
         [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
