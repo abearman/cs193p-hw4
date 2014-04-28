@@ -36,6 +36,10 @@ static const int MISMATCH_PENALTY = 2;
 static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
+- (NSUInteger)cardCount {
+    return [[self cards] count];
+}
+
 /* Guts of the algorithm for selecting and matching cards */
 - (void)chooseCardAtIndex:(NSUInteger)index {
 
@@ -120,6 +124,17 @@ static const int COST_TO_CHOOSE = 1;
     }
     
     return self;
+}
+
+- (void)drawMoreCards:(NSUInteger)number {
+    for (int i = 0; i < number; i++) {
+        Card *card = [self.deck drawRandomCard];
+        if (card) {
+            [self.cards addObject:card];
+        } else {
+            break;
+        }
+    }
 }
 
 - (instancetype) init { //They can't call [[CardMatchingGame alloc] init]
