@@ -58,41 +58,30 @@
     }
 }
 
-/*
-- (NSAttributedString *)titleForCard: (Card *)card {
-    NSArray *chunks = [card.contents componentsSeparatedByString:@" "];
-    NSString *symbols = [chunks firstObject];
-    NSMutableAttributedString *contents = [[NSMutableAttributedString alloc] initWithString:symbols];
-    
-    NSString *color = [chunks objectAtIndex:1];
-    UIColor *colorObj;
-    if ([color isEqualToString:@"red"])  {
-        [contents addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0, [contents length])];
-        colorObj = [UIColor redColor];
-    } else if ([color isEqualToString:@"green"]) {
-        [contents addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, [contents length])];
-        colorObj = [UIColor greenColor];
-    } else if ([color isEqualToString:@"purple"]) {
-        [contents addAttribute:NSForegroundColorAttributeName value:[UIColor purpleColor] range:NSMakeRange(0, [contents length])];
-        colorObj = [UIColor purpleColor];
+- (void)updateAllCards {
+    for (SetCardView *scView in self.cardViews) {
+        NSUInteger cardViewIndex = [self.cardViews indexOfObject:scView];
+        Card *card = [self.game cardAtIndex:cardViewIndex];
+        if (card.isChosen) {
+            scView.chosen = YES;
+            [scView setNeedsDisplay];
+        } else {
+            scView.chosen = NO;
+            [scView setNeedsDisplay];
+        }
     }
-    
-    NSString *shading = [chunks objectAtIndex:2];
-    //Don't do any shading for solid cards
-    if ([shading isEqualToString:@"striped"]) {
-        [contents addAttribute:NSForegroundColorAttributeName value:[colorObj colorWithAlphaComponent:0.3f] range:NSMakeRange(0, [contents length])];
-        [contents addAttribute:NSStrokeColorAttributeName value:colorObj range:NSMakeRange(0, [contents length])];
-    } else if ([shading isEqualToString:@"open"]) {
-        [contents addAttribute:NSStrokeWidthAttributeName value:[NSNumber numberWithFloat:-3.0] range:NSMakeRange(0, [contents length])];
-        [contents addAttribute:NSStrokeColorAttributeName value:colorObj range:NSMakeRange(0, [contents length])];
-        [contents addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, [contents length])];
-    }
-    return contents;
 }
 
-- (UIImage *)backgroundImageForCard:(Card *)card {
-    return [UIImage imageNamed:card.isChosen ? @"graybox-1": @"cardfront"];
+- (void) redrawCards {
+    int index = 0;
+    for (SetCardView *scView in self.cardViews) {
+        SetCard *setCard = (SetCard *)[self.game cardAtIndex:index];
+        scView.number = setCard.number;
+        scView.shape = setCard.shape;
+        scView.shading = setCard.shading;
+        scView.color = setCard.color;
+        index++;
+    }
 }
-*/
 
 @end

@@ -13,6 +13,12 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
+    UIColor *colorToUse = (self.chosen)? [UIColor lightGrayColor] : [UIColor whiteColor];
+    [colorToUse setFill];
+    UIRectFill(self.bounds);
+    [[UIColor blackColor] setStroke];
+    [self.roundedRect stroke];
+    
     double width = self.bounds.size.width;
     double height = self.bounds.size.height;
     double x = self.bounds.origin.x;
@@ -27,7 +33,7 @@
         CGRect boundsOfShapes = CGRectMake(xOfShape, yOfShape, widthOfShape, heightOfShape);
         
         if (self.shape == SQUIGGLE) {
-            
+            [self drawSquiggleWithBounds:boundsOfShapes];
         } else if (self.shape == DIAMOND) {
             [self drawDiamondWithBounds:boundsOfShapes];
         } else if (self.shape == OVAL) {
@@ -42,7 +48,8 @@
         CGRect boundsOfShapes2 = CGRectMake(xOfShape, yOfShape2, widthOfShape, heightOfShape);
 
         if (self.shape == SQUIGGLE) {
-            
+            [self drawSquiggleWithBounds:boundsOfShapes1];
+            [self drawSquiggleWithBounds:boundsOfShapes2];
         } else if (self.shape == DIAMOND) {
             [self drawDiamondWithBounds:boundsOfShapes1];
             [self drawDiamondWithBounds:boundsOfShapes2];
@@ -61,7 +68,9 @@
         CGRect boundsOfShapes3 = CGRectMake(xOfShape, yOfShape3, widthOfShape, heightOfShape);
         
         if (self.shape == SQUIGGLE) {
-            
+            [self drawSquiggleWithBounds:boundsOfShapes1];
+            [self drawSquiggleWithBounds:boundsOfShapes2];
+            [self drawSquiggleWithBounds:boundsOfShapes3];
         } else if (self.shape == DIAMOND) {
             [self drawDiamondWithBounds:boundsOfShapes1];
             [self drawDiamondWithBounds:boundsOfShapes2];
@@ -74,9 +83,9 @@
     }
 }
 
-- (void)drawOvalWithBounds: (CGRect)bounds {
-    UIBezierPath *oval = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:10.0];
-    [self setShadingOfShape:oval];
+- (void)drawSquiggleWithBounds: (CGRect)bounds {
+    UIBezierPath *squiggle = [UIBezierPath bezierPathWithOvalInRect:bounds];
+    [self setShadingAndColor:squiggle];
 }
 
 - (void)drawDiamondWithBounds: (CGRect)bounds {
@@ -91,10 +100,15 @@
     [diamond addLineToPoint:CGPointMake(x + width, y + height/2)];
     [diamond addLineToPoint:CGPointMake(x + width/2, y + height)];
     [diamond closePath];
-    [self setShadingOfShape:diamond];
+    [self setShadingAndColor:diamond];
 }
 
-- (void)setShadingOfShape: (UIBezierPath *)path {
+- (void)drawOvalWithBounds: (CGRect)bounds {
+    UIBezierPath *oval = [UIBezierPath bezierPathWithRoundedRect:bounds cornerRadius:(bounds.size.width / 5.0)];
+    [self setShadingAndColor:oval];
+}
+
+- (void)setShadingAndColor: (UIBezierPath *)path {
     if (self.shading == SOLID) {
         [self.color setFill];
         [path fill];
@@ -102,9 +116,10 @@
         [self.color setFill];
         [path fill];
     } else if (self.shading == OPEN) {
-        [self.color setStroke];
-        [path stroke];
+        // Do nothing, because we'll set the stroke later
     }
+    [self.color setStroke];
+    [path stroke];
 }
 
 //////////////////////////////////////

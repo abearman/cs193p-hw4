@@ -10,4 +10,7 @@
 
 @interface CardView : UIView
 
+@property (strong, nonatomic) UIBezierPath *roundedRect;
+
 @end
+

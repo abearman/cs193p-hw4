@@ -57,7 +57,6 @@
     [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
     [self updateAllCards];
-    [self redrawCards];
     
     double i = 0.0;
     for (UIView *view in self.cardViews) {
@@ -67,15 +66,19 @@
                              view.frame = CGRectOffset(view.frame, 0, 500);
                          }
                          completion:^(BOOL finished) {
+                             [self redrawCards];
                              view.frame = CGRectOffset(view.frame, 0, -1000);
-                             [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                                 view.frame = CGRectOffset(view.frame, 0, 500);
-                         }
-                        completion:nil];
+                             [UIView animateWithDuration:1.0 
+                                                   delay:1.0
+                                                 options:UIViewAnimationOptionCurveEaseInOut
+                                              animations:^{
+                                                  view.frame = CGRectOffset(view.frame, 0, 500);
+                                              }
+                                              completion:nil
+                              ];
                                       
          }];
     }
-    
 }
 
 - (void)gatherCardsIntoStack {
@@ -140,7 +143,6 @@
         [self.game chooseCardAtIndex:chosenCardIndex]; // Update the model to reflect that a card has been chosen
         [self updateAllCards]; // Should update the UI of all card views appropriately, handled by the subclasses
         self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score]; // Updates the score label accordingly
-
     }
 }
 

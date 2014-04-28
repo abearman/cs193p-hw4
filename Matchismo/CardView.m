@@ -19,15 +19,14 @@
 - (CGFloat)cornerRadius { return CORNER_RADIUS * [self cornerScaleFactor]; }
 
 - (void)drawRect:(CGRect)rect {
-    UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
-    
-    [roundedRect addClip];
+    self.roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
+    [self.roundedRect addClip];
     
     [[UIColor whiteColor] setFill];
     UIRectFill(self.bounds);
     
     [[UIColor blackColor] setStroke];
-    [roundedRect stroke];
+    [self.roundedRect stroke];
 }
 
 #pragma mark Initialization
