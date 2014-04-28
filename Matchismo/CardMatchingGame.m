@@ -43,6 +43,10 @@ static const int COST_TO_CHOOSE = 1;
 /* Guts of the algorithm for selecting and matching cards */
 - (void)chooseCardAtIndex:(NSUInteger)index {
 
+    // Don't let background clicks mess us up
+
+    if (index < 0 || index >= [self cardCount]) return;
+
     [self.lastCards removeAllObjects]; // Clears the array of selected cards for this round
     Card *card = [self cardAtIndex:index]; // Retrieves the Card object corresponding to the card button clicked
     [self.lastCards addObject:card]; //Adds the initial clicked card to the array of selected cards

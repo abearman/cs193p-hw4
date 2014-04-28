@@ -63,6 +63,7 @@
     [self updateAllCards];
     
     double i = 0.0;
+    __block BOOL redrawn = NO;
     for (UIView *view in self.cardViews) {
         [UIView animateWithDuration:1.0 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count])
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -70,8 +71,11 @@
                              view.frame = CGRectOffset(view.frame, 0, 500);
                          }
                          completion:^(BOOL finished) {
-                             [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
-                             [self redrawCards];
+                             if (!redrawn) {
+                                 [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
+                                 [self redrawCards];
+                                 redrawn = YES;
+                             }
                              view.frame = CGRectOffset(view.frame, 0, -1000);
                              [UIView animateWithDuration:1.0 
                                                    delay:1.0

@@ -58,11 +58,11 @@
             SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
 
             SetCard *setCard = (SetCard *)card;
-            scView.chosen = NO;
             scView.color = setCard.color;
             scView.number = setCard.number;
             scView.shading = setCard.shading;
             scView.shape = setCard.shape;
+            scView.chosen = setCard.chosen;
 
             [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
             [self.backgroundView addSubview:scView];
@@ -84,13 +84,8 @@
     for (SetCardView *scView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:scView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
-        if (card.isChosen) {
-            scView.chosen = YES;
-            [scView setNeedsDisplay];
-        } else {
-            scView.chosen = NO;
-            [scView setNeedsDisplay];
-        }
+        scView.chosen = card.isChosen;
+        [scView setNeedsDisplay];
     }
 }
 
@@ -102,6 +97,7 @@
         scView.shape = setCard.shape;
         scView.shading = setCard.shading;
         scView.color = setCard.color;
+        scView.chosen = setCard.isChosen;
         [scView setNeedsDisplay];
         index++;
     }
