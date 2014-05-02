@@ -65,7 +65,7 @@
             scView.chosen = setCard.chosen;
             
             [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
-            [self.backgroundView addSubview:scView];
+            if (!card.matched) [self.backgroundView addSubview:scView];
         }
     }
 }
@@ -85,7 +85,11 @@
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:scView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
         scView.chosen = card.isChosen;
-        [scView setNeedsDisplay];
+        if (card.matched) {
+            [scView removeFromSuperview];
+        } else {
+            [scView setNeedsDisplay];
+        }
     }
 }
 
