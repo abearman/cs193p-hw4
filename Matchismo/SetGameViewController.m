@@ -102,6 +102,12 @@
     [self.cardViews removeObjectsInArray:discardViews];
     [self.game discardCards:discardCards];
     self.grid.minimumNumberOfCells = [self.cardViews count];
+    
+    for (SetCardView *scView in self.cardViews) {
+        [scView removeFromSuperview];
+    }
+    self.cardViews = [[NSMutableArray alloc] init];
+    [self setUpCards];
 
 }
 
