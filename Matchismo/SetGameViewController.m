@@ -81,16 +81,28 @@
 }
 
 - (void)updateAllCards {
+    NSMutableArray *discardViews = [NSMutableArray array];
+    NSMutableArray *discardCards = [NSMutableArray array];
+    
     for (SetCardView *scView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:scView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
         scView.chosen = card.isChosen;
         if (card.matched) {
+           
             [scView removeFromSuperview];
+            [discardViews addObject:scView];
+            [discardCards addObject:card];
+            
         } else {
             [scView setNeedsDisplay];
         }
     }
+    
+    [self.cardViews removeObjectsInArray:discardViews];
+    [self.game discardCards:discardCards];
+    self.grid.minimumNumberOfCells = [self.cardViews count];
+
 }
 
 - (void) redrawCards {

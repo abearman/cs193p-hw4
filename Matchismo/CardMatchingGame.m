@@ -141,6 +141,10 @@ static const int COST_TO_CHOOSE = 1;
     }
 }
 
+- (void)discardCards:(NSArray *)cards {
+    [self.cards removeObjectsInArray:cards];
+}
+
 - (instancetype) init { //They can't call [[CardMatchingGame alloc] init]
     return nil; //Or raise an exception
 }

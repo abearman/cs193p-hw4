@@ -19,6 +19,7 @@
 - (Card *)cardAtIndex:(NSUInteger)index;
 - (void)drawMoreCards:(NSUInteger)number;
 - (NSUInteger)cardCount;
+- (void)discardCards:(NSArray *)cards;
 
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic, readonly) NSMutableArray *lastCards;
