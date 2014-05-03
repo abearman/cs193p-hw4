@@ -27,14 +27,8 @@
 
 @implementation GameViewController
 
-- (void)deviceOrientationDidChange:(NSNotification *)notification {
-    [self setUpGrid];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
@@ -125,28 +119,19 @@
         int index = 0;
         for (int i = 0; i < self.grid.rowCount; i++) {
             for (int j = 0; j < self.grid.columnCount; j++) {
-                UIView *view = [self.cardViews objectAtIndex:index];
+                if (index >= self.grid.minimumNumberOfCells) break;
+                CardView *cardView = [self.cardViews objectAtIndex:index];
                 index++;
-                view.frame = CGRectMake(self.backgroundView.frame.origin.x - 10, self.backgroundView.frame.origin.y - 10, view.frame.size.width, view.frame.size.height);
-            }
-        }
-        
-        self.backgroundView.frame = CGRectMake(20.0, 37.0, 280.0, 442.0); // reinit background frame
-        
-        int jdex = 0;
-        for (int i = 0; i < self.grid.rowCount; i++) {
-            for (int j = 0; j < self.grid.columnCount; j++) {
-                UIView *view = [self.cardViews objectAtIndex:jdex];
-                jdex++;
                 
-                [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
-                                 animations:^{
-                                     CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                                     view.frame = viewRect;
-                                 }
-                                 completion:nil];
+                [PlayingCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                                          animations:^{
+                                              CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                              cardView.frame = viewRect;
+                                          }
+                                          completion:nil];
             }
         }
+        self.backgroundView.frame = CGRectMake(20.0, 37.0, 280.0, 442.0); // reinit background frame
         self.cardsInStack = false;
         
     } else {
@@ -175,19 +160,7 @@
 - (void) setUpGrid {
     CGFloat width = self.backgroundView.frame.size.width;
     CGFloat height = self.backgroundView.frame.size.height;
-    NSLog(@"backgroundView width: %f", width);
-    NSLog(@"backgroundView height: %f", height);
-    NSLog(@"grid width: %f", self.grid.size.width);
-    NSLog(@"grid height: %f", self.grid.size.height);
     self.grid.size = CGSizeMake(width, height);
-    
-    /*if (self.grid.size.width <= width) {
-        self.grid.size = CGSizeMake(100, 100);
-    } else {
-        self.grid.size = CGSizeMake(1000, 1000);
-    }*/
-    
-    
     self.grid.cellAspectRatio = 0.67;
     self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
 }
