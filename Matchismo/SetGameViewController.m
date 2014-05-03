@@ -95,6 +95,7 @@
     NSLog(@"Row: %d", row);
     NSLog(@"Col: %d", col);
     
+    int k = 0;
     int index = (int)(self.grid.minimumNumberOfCells - 3);
     for (int i = row; i < self.grid.rowCount; i++) {
         for (int j = col; j < self.grid.columnCount; j++) {
@@ -103,7 +104,7 @@
             index++;
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
             
-            SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
+            SetCardView *scView = [[SetCardView alloc] initWithFrame:CGRectMake(100, 1000, viewRect.size.width, viewRect.size.height)];
             SetCard *setCard = (SetCard *)card;
             scView.color = setCard.color;
             scView.number = setCard.number;
@@ -111,13 +112,12 @@
             scView.shape = setCard.shape;
             scView.chosen = setCard.chosen;
             if (!card.matched) [self.backgroundView addSubview:scView];
-            [scView setAlpha:0.0];
-            
             [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
             
-            [SetCardView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionTransitionCrossDissolve
+            [SetCardView animateWithDuration:1.0 delay:(1.0 + (0.2*k++))
+                                     options:UIViewAnimationOptionTransitionCrossDissolve
                                   animations:^{
-                                      [scView setAlpha: 1.0];
+                                      scView.frame = viewRect;
                                   }
                                   completion:nil];
         }
