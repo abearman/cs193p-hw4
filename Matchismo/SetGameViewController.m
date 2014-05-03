@@ -70,11 +70,15 @@
     }
 }
 
-- (void)resizeExistingCards {
+- (void)resizeExistingCards: (BOOL)isAdditive {
     int index = 0;
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
-            if (index >= self.grid.minimumNumberOfCells - 3) break;
+            if (isAdditive) {
+                if (index >= self.grid.minimumNumberOfCells - 3) break;
+            } else {
+                if (index >= self.grid.minimumNumberOfCells) break;
+            }
             SetCardView *scView = [self.cardViews objectAtIndex:index];
             
             [SetCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
@@ -128,7 +132,7 @@
 - (IBAction)getThreeMoreCards:(UIButton *)sender {
     if (![self.game drawMoreCards:3]) return;
     self.grid.minimumNumberOfCells = [self.game cardCount];
-    [self resizeExistingCards];
+    [self resizeExistingCards:YES];
     [self displayThreeMoreCards];
 }
 
@@ -154,13 +158,7 @@
     [self.cardViews removeObjectsInArray:discardViews];
     [self.game discardCards:discardCards];
     self.grid.minimumNumberOfCells = [self.cardViews count];
-    
-    for (SetCardView *scView in self.cardViews) {
-        [scView removeFromSuperview];
-    }
-    self.cardViews = [[NSMutableArray alloc] init];
-    [self setUpCards];
-
+    [self resizeExistingCards:NO];
 }
 
 - (void) redrawCards {
