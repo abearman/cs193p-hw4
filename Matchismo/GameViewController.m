@@ -123,7 +123,7 @@
                 CardView *cardView = [self.cardViews objectAtIndex:index];
                 index++;
                 
-                [PlayingCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                [CardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                                           animations:^{
                                               CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
                                               cardView.frame = viewRect;
@@ -146,7 +146,7 @@
 
 /* Reinitializes the CardMatchingGame object if the user restarts the game */
 - (void)reinitializeGame {
-    _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardViews count]
+    _game = [[CardMatchingGame alloc] initWithCardCount:[self minimumNumberOfCards]
                                               usingDeck: [self createDeck]];
     self.game.gameMode = 0; // Default 2-card playing mode
 }

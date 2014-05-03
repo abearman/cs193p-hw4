@@ -70,12 +70,65 @@
     }
 }
 
+- (void)resizeExistingCards {
+    int index = 0;
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells - 3) break;
+            SetCardView *scView = [self.cardViews objectAtIndex:index];
+            
+            [SetCardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                               animations:^{
+                                   CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                   scView.frame = viewRect;
+                               }
+                                  completion:nil];
+            index++;
+        }
+    }
+}
+
+- (void)displayThreeMoreCards {
+    int col = (int)((self.grid.minimumNumberOfCells - 3) % self.grid.rowCount);
+    int row = (int)((self.grid.minimumNumberOfCells - 3) / self.grid.columnCount);
+   
+    NSLog(@"Row: %d", row);
+    NSLog(@"Col: %d", col);
+    
+    int index = (int)(self.grid.minimumNumberOfCells - 3);
+    for (int i = row; i < self.grid.rowCount; i++) {
+        for (int j = col; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells) return;
+            Card *card = [self.game cardAtIndex:index];
+            index++;
+            CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+            
+            SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
+            SetCard *setCard = (SetCard *)card;
+            scView.color = setCard.color;
+            scView.number = setCard.number;
+            scView.shading = setCard.shading;
+            scView.shape = setCard.shape;
+            scView.chosen = setCard.chosen;
+            if (!card.matched) [self.backgroundView addSubview:scView];
+            [scView setAlpha:0.0];
+            
+            [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
+            
+            [SetCardView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionTransitionCrossDissolve
+                                  animations:^{
+                                      [scView setAlpha: 1.0];
+                                  }
+                                  completion:nil];
+        }
+    }
+}
+
 - (IBAction)getThreeMoreCards:(UIButton *)sender {
     [self.game drawMoreCards:3];
     self.grid.minimumNumberOfCells = [self.game cardCount];
-    for (SetCardView *scView in self.cardViews) [scView removeFromSuperview];
-    self.cardViews = [[NSMutableArray alloc] init];
-    [self setUpCards];
+    [self resizeExistingCards];
+    [self displayThreeMoreCards];
 }
 
 - (void)updateAllCards {
