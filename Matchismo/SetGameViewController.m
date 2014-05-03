@@ -21,8 +21,6 @@
 
 @implementation SetGameViewController
 
-#define NUM_CARDS 12;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.game.gameMode = 1; // 3-card playing mode, by default
@@ -48,12 +46,12 @@
 }
 
 - (void) setUpCards {
-    NSUInteger numCards = 0;
+    int index = 0;
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
-            if (numCards >= self.grid.minimumNumberOfCells) break;
-            Card *card = [self.game cardAtIndex:numCards];
-            numCards++;
+            if (index >= self.grid.minimumNumberOfCells) break;
+            Card *card = [self.game cardAtIndex:index];
+            index++;
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
             SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
             
@@ -66,6 +64,7 @@
             
             [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
             if (!card.matched) [self.backgroundView addSubview:scView];
+            
         }
     }
 }
@@ -95,9 +94,6 @@
 - (void)displayThreeMoreCards {
     int col = (int)((self.grid.minimumNumberOfCells - 3) % self.grid.rowCount);
     int row = (int)((self.grid.minimumNumberOfCells - 3) / self.grid.columnCount);
-   
-    NSLog(@"Row: %d", row);
-    NSLog(@"Col: %d", col);
     
     int k = 0;
     int index = (int)(self.grid.minimumNumberOfCells - 3);
@@ -159,20 +155,6 @@
     [self.game discardCards:discardCards];
     self.grid.minimumNumberOfCells = [self.cardViews count];
     [self resizeExistingCards:NO];
-}
-
-- (void) redrawCards {
-    int index = 0;
-    for (SetCardView *scView in self.cardViews) {
-        SetCard *setCard = (SetCard *)[self.game cardAtIndex:index];
-        scView.number = setCard.number;
-        scView.shape = setCard.shape;
-        scView.shading = setCard.shading;
-        scView.color = setCard.color;
-        scView.chosen = setCard.isChosen;
-        [scView setNeedsDisplay];
-        index++;
-    }
 }
 
 - (NSUInteger)minimumNumberOfCards {

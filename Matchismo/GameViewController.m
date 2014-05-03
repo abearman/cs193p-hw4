@@ -48,7 +48,6 @@
     [self.panRecognizer setMaximumNumberOfTouches:1];
     
     // Start a new game
-    
     [self reinitializeGame];
     [self redrawCards];
 }
@@ -64,10 +63,10 @@
     double i = 0.0;
     __block BOOL redrawn = NO;
     for (UIView *view in self.cardViews) {
-        [UIView animateWithDuration:1.0 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count])
+        [UIView animateWithDuration:1.5 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count])
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             view.frame = CGRectOffset(view.frame, 0, 500);
+                             view.frame = CGRectOffset(view.frame, 0, 1000);
                          }
                          completion:^(BOOL finished) {
                              if (!redrawn) {
@@ -75,7 +74,7 @@
                                  [self redrawCards];
                                  redrawn = YES;
                              }
-                             view.frame = CGRectOffset(view.frame, 0, -1000);
+                             view.frame = CGRectOffset(view.frame, 0, -1500);
                              [UIView animateWithDuration:1.0
                                                    delay:1.0
                                                  options:UIViewAnimationOptionCurveEaseInOut
@@ -124,11 +123,11 @@
                 index++;
                 
                 [CardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
-                                          animations:^{
-                                              CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-                                              cardView.frame = viewRect;
-                                          }
-                                          completion:nil];
+                                   animations:^{
+                                       CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                       cardView.frame = viewRect;
+                                   }
+                                   completion:nil];
             }
         }
         self.backgroundView.frame = CGRectMake(20.0, 37.0, 280.0, 442.0); // reinit background frame
