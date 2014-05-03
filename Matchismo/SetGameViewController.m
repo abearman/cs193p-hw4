@@ -72,7 +72,7 @@
 
 - (IBAction)getThreeMoreCards:(UIButton *)sender {
     [self.game drawMoreCards:3];
-    self.grid.minimumNumberOfCells = [self.cardViews count] + 3; // Changed
+    self.grid.minimumNumberOfCells = [self.cardViews count]; // Changed
     for (SetCardView *scView in self.cardViews) {
         [scView removeFromSuperview];
     }

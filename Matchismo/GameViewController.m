@@ -27,8 +27,14 @@
 
 @implementation GameViewController
 
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+    [self setUpGrid];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
@@ -169,7 +175,19 @@
 - (void) setUpGrid {
     CGFloat width = self.backgroundView.frame.size.width;
     CGFloat height = self.backgroundView.frame.size.height;
+    NSLog(@"backgroundView width: %f", width);
+    NSLog(@"backgroundView height: %f", height);
+    NSLog(@"grid width: %f", self.grid.size.width);
+    NSLog(@"grid height: %f", self.grid.size.height);
     self.grid.size = CGSizeMake(width, height);
+    
+    /*if (self.grid.size.width <= width) {
+        self.grid.size = CGSizeMake(100, 100);
+    } else {
+        self.grid.size = CGSizeMake(1000, 1000);
+    }*/
+    
+    
     self.grid.cellAspectRatio = 0.67;
     self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
 }

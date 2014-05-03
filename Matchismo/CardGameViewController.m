@@ -16,8 +16,6 @@
 @interface CardGameViewController ()
 @end
 
-#define NUM_CARDS 36;
-
 @implementation CardGameViewController
 
 /* Initializes UI of game for each time the CardGameViewController is loaded,
@@ -38,6 +36,7 @@
     int index = 0;
     for (int i = 0; i < self.grid.rowCount; i++) {
         for (int j = 0; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells) break;
             Card *card = [self.game cardAtIndex:index];
             index++;
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
@@ -119,7 +118,7 @@
 }
 
 - (NSUInteger)minimumNumberOfCards {
-    return 36;
+    return 30;
 }
 
 @end
