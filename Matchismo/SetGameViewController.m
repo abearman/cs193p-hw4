@@ -99,6 +99,7 @@
     int index = (int)(self.grid.minimumNumberOfCells - 3);
     for (int i = row; i < self.grid.rowCount; i++) {
         for (int j = col; j < self.grid.columnCount; j++) {
+            if (i > row) j = 0;
             if (index >= self.grid.minimumNumberOfCells) return;
             Card *card = [self.game cardAtIndex:index];
             index++;
@@ -114,7 +115,7 @@
             if (!card.matched) [self.backgroundView addSubview:scView];
             [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
             
-            [SetCardView animateWithDuration:1.0 delay:(1.0 + (0.2*k++))
+            [SetCardView animateWithDuration:1.0 delay:((0.2*k++))
                                      options:UIViewAnimationOptionTransitionCrossDissolve
                                   animations:^{
                                       scView.frame = viewRect;
@@ -125,7 +126,7 @@
 }
 
 - (IBAction)getThreeMoreCards:(UIButton *)sender {
-    [self.game drawMoreCards:3];
+    if (![self.game drawMoreCards:3]) return;
     self.grid.minimumNumberOfCells = [self.game cardCount];
     [self resizeExistingCards];
     [self displayThreeMoreCards];
@@ -177,7 +178,7 @@
 }
 
 - (NSUInteger)minimumNumberOfCards {
-    return 12;
+    return 78;
 }
 
 @end

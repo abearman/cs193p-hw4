@@ -17,7 +17,7 @@
 
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (Card *)cardAtIndex:(NSUInteger)index;
-- (void)drawMoreCards:(NSUInteger)number;
+- (BOOL)drawMoreCards:(NSUInteger)number;
 - (NSUInteger)cardCount;
 - (void)discardCards:(NSArray *)cards;
 

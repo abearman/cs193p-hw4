@@ -130,15 +130,17 @@ static const int COST_TO_CHOOSE = 1;
     return self;
 }
 
-- (void)drawMoreCards:(NSUInteger)number {
+- (BOOL)drawMoreCards:(NSUInteger)number {
     for (int i = 0; i < number; i++) {
         Card *card = [self.deck drawRandomCard];
         if (card) {
             [self.cards addObject:card];
+            if (i == number - 1) return true;
         } else {
-            break;
+            return false;
         }
     }
+    return false;
 }
 
 - (void)discardCards:(NSArray *)cards {
