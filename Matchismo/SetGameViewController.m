@@ -178,7 +178,7 @@
 }
 
 - (NSUInteger)minimumNumberOfCards {
-    return 78;
+    return 12;
 }
 
 @end
