@@ -47,11 +47,12 @@
 }
 
 - (void)relayoutViewsInGrid {
-    for (SetCardView *scView in self.cardViews) {
-        [scView removeFromSuperview];
+    for (CardView *cardView in self.cardViews) {
+        [cardView removeFromSuperview];
     }
     self.cardViews = [[NSMutableArray alloc] init];
     [self setUpCards];
+    [self updateAllCards];
 }
 
 - (void)setUpCards {
