@@ -32,8 +32,8 @@
     return [[PlayingCardDeck alloc] init];
 }
 
-- (void)reinitializeGame {
-    [super reinitializeGame];
+- (void)reinitializeGame:(int)currentGridSize {
+    [super reinitializeGame:currentGridSize];
     int index = 0;
     for (PlayingCardView *pcView in self.cardViews) {
         PlayingCard *playingCard = (PlayingCard *)[self.game cardAtIndex:index];

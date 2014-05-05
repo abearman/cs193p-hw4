@@ -37,7 +37,7 @@
     [self setUpGestureRecognizers];
     
     // Start a new game
-    [self reinitializeGame];
+    [self reinitializeGame:[self minimumNumberOfCards]];
     [self setUpCards];
 }
 
@@ -84,6 +84,8 @@
 - (IBAction)startNewGame:(UIButton *)sender {
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
     [self flipAllCards];
+    __block int currentGridSize = self.grid.minimumNumberOfCells;
+    self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
     
     double i = 0.0;
     __block BOOL redrawn = NO;
@@ -95,7 +97,7 @@
                          }
                          completion:^(BOOL finished) {
                              if (!redrawn) {
-                                 [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
+                                 [self reinitializeGame:currentGridSize]; // Redeal all cards by reinitializing the CardMatchingGame object
                                  redrawn = YES;
                              }
                              view.frame = CGRectOffset(view.frame, 0, -1500);
@@ -168,7 +170,7 @@
 }
 
 /* Reinitializes the CardMatchingGame object if the user restarts the game */
-- (void)reinitializeGame {
+- (void)reinitializeGame:(int)currentGridSize {
     _game = [[CardMatchingGame alloc] initWithCardCount:[self minimumNumberOfCards]
                                               usingDeck: [self createDeck]];
     self.game.gameMode = 0; // Default 2-card playing mode
@@ -205,7 +207,6 @@
     [self.backgroundView addGestureRecognizer:self.panRecognizer];
     [self.panRecognizer setMaximumNumberOfTouches:1];
 }
-
 
 - (NSUInteger) minimumNumberOfCards {
     return 0;

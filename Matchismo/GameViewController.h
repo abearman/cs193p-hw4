@@ -17,7 +17,7 @@
 @property (strong, nonatomic) Grid *grid;
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
 
-- (void)reinitializeGame;
+- (void)reinitializeGame:(int)currentGridSize;
 
 // Methods to be overriden by subclasses:
 - (NSAttributedString *)titleForCard: (Card *)card;
@@ -25,5 +25,6 @@
 - (Deck *)createDeck;
 - (void) setUpCards;
 - (NSUInteger) minimumNumberOfCards;
+- (void) setUpGrid;
 
 @end

@@ -33,18 +33,17 @@
 
 /* Overrides the GameViewController to make sure the game-mode is set to 3-card
  * mode when the game is restarted */
-- (void)reinitializeGame {
-    [super reinitializeGame];
+- (void)reinitializeGame:(int)currentGridSize {
+    [super reinitializeGame:currentGridSize];
     self.game.gameMode = 1;
     
     NSMutableArray *discardViews = [NSMutableArray array];
-    for (int i = [self minimumNumberOfCards]; i < self.grid.minimumNumberOfCells; i++) {
+    for (int i = [self minimumNumberOfCards]; i < currentGridSize; i++) {
         SetCardView *scView = [self.cardViews objectAtIndex:i];
         [scView removeFromSuperview];
         [discardViews addObject:scView];
     }
     [self.cardViews removeObjectsInArray:discardViews];
-    self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
     
     for (SetCardView *scView in self.cardViews) {
         int cardViewIndex = [self.cardViews indexOfObject:scView];
@@ -54,6 +53,7 @@
         scView.shading = setCard.shading;
         scView.shape = setCard.shape;
         scView.chosen = setCard.chosen;
+        
         [scView setNeedsDisplay];
     }
 }
