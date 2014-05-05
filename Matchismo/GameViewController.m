@@ -73,7 +73,7 @@
             index++;
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
             CardView *cardView = [self initializeCardViewWithCard:card withRect:viewRect];
-            [self.backgroundView addSubview:cardView];
+            [self.cardViews addObject:cardView];
         }
     }
 }

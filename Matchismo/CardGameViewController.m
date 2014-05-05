@@ -48,7 +48,7 @@
     PlayingCard *playingCard = (PlayingCard *)card;
     pcView.suit = playingCard.suit;
     pcView.rank = playingCard.rank;
-    [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
+    [self.backgroundView addSubview:pcView];
     return pcView;
 }
 
