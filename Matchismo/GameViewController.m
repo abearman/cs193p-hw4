@@ -47,12 +47,21 @@
 }
 
 - (void)relayoutViewsInGrid {
-    for (CardView *cardView in self.cardViews) {
-        [cardView removeFromSuperview];
+    int index = 0;
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells) break;
+            CardView *cardView = [self.cardViews objectAtIndex:index];
+            
+            [CardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                                  animations:^{
+                                      CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                      cardView.frame = viewRect;
+                                  }
+                                  completion:nil];
+            index++;
+        }
     }
-    self.cardViews = [[NSMutableArray alloc] init];
-    [self setUpCards];
-    [self updateAllCards];
 }
 
 - (void)setUpCards {
