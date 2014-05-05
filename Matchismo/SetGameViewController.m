@@ -82,7 +82,7 @@
 }
 
 - (void)displayThreeMoreCards {
-    int col = (int)((self.grid.minimumNumberOfCells - 3) % self.grid.rowCount);
+    int col = (int)((self.grid.minimumNumberOfCells - 3) % self.grid.columnCount);
     int row = (int)((self.grid.minimumNumberOfCells - 3) / self.grid.columnCount);
     
     int k = 0;
