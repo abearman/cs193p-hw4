@@ -32,28 +32,27 @@
     return [[PlayingCardDeck alloc] init];
 }
 
-- (void) setUpCards {
+- (void)reinitializeGame {
+    [super reinitializeGame];
     int index = 0;
-    for (int i = 0; i < self.grid.rowCount; i++) {
-        for (int j = 0; j < self.grid.columnCount; j++) {
-            if (index >= self.grid.minimumNumberOfCells) break;
-            Card *card = [self.game cardAtIndex:index];
-            index++;
-            CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-            PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
-            pcView.userInteractionEnabled = YES;
-            
-            PlayingCard *playingCard = (PlayingCard *)card;
-            pcView.suit = playingCard.suit;
-            pcView.rank = playingCard.rank;
-            
-            [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
-            [self.backgroundView addSubview:pcView];
-        }
+    for (PlayingCardView *pcView in self.cardViews) {
+        PlayingCard *playingCard = (PlayingCard *)[self.game cardAtIndex:index];
+        pcView.suit = playingCard.suit;
+        pcView.rank = playingCard.rank;
+        index++;
     }
 }
 
-- (void) flipAllCards {
+- (CardView *)initializeCardViewWithCard:(Card *)card withRect:(CGRect)viewRect {
+    PlayingCardView *pcView = [[PlayingCardView alloc] initWithFrame:viewRect];
+    PlayingCard *playingCard = (PlayingCard *)card;
+    pcView.suit = playingCard.suit;
+    pcView.rank = playingCard.rank;
+    [self.cardViews addObject:pcView]; // Adds the PlayingCardView to the NSMutableArray
+    return pcView;
+}
+
+- (void)flipAllCards {
     for (PlayingCardView *pcView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:pcView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
@@ -82,16 +81,6 @@
                              animations:^{
                                  pcView.faceUp = isFaceUp;
                              } completion:nil];
-}
-
-- (void) redrawCards {
-    int index = 0;
-    for (PlayingCardView *pcView in self.cardViews) {
-        PlayingCard *playingCard = (PlayingCard *)[self.game cardAtIndex:index];
-        pcView.suit = playingCard.suit;
-        pcView.rank = playingCard.rank;
-        index++;
-    }
 }
 
 - (NSMutableAttributedString *)getCardAttributedContents:(Card *)card {

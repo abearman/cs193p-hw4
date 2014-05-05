@@ -36,14 +36,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1SG-aU-6eo">
-                                <rect key="frame" x="20" y="476" width="280" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1SG-aU-6eo">
+                                <rect key="frame" x="20" y="471" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lwU-mp-xP6">
-                                <rect key="frame" x="156" y="471" width="144" height="32"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lwU-mp-xP6">
+                                <rect key="frame" x="179" y="466" width="121" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -55,7 +55,7 @@
                                     <action selector="startNewGame:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Duc-zb-jsU"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Ac-tr-gYI">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Ac-tr-gYI">
                                 <rect key="frame" x="20" y="20" width="280" height="443"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -63,6 +63,18 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="1SG-aU-6eo" firstAttribute="trailing" secondItem="5Ac-tr-gYI" secondAttribute="trailing" id="0iy-pk-c9t"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="1SG-aU-6eo" secondAttribute="bottom" constant="27" id="PzZ-fu-U5Z"/>
+                            <constraint firstItem="5Ac-tr-gYI" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="Q4b-0c-xS0"/>
+                            <constraint firstItem="1SG-aU-6eo" firstAttribute="top" secondItem="5Ac-tr-gYI" secondAttribute="bottom" constant="8" symbolic="YES" id="ZjS-AE-JAd"/>
+                            <constraint firstItem="lwU-mp-xP6" firstAttribute="trailing" secondItem="1SG-aU-6eo" secondAttribute="trailing" id="a0O-S8-ltH"/>
+                            <constraint firstItem="5Ac-tr-gYI" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="20" symbolic="YES" id="ard-6P-dmE"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="lwU-mp-xP6" secondAttribute="bottom" constant="21" id="eES-pc-D0r"/>
+                            <constraint firstItem="1SG-aU-6eo" firstAttribute="leading" secondItem="5Ac-tr-gYI" secondAttribute="leading" id="fvy-lj-gaa"/>
+                            <constraint firstItem="lwU-mp-xP6" firstAttribute="top" secondItem="5Ac-tr-gYI" secondAttribute="bottom" constant="3" id="qZe-ar-bID"/>
+                            <constraint firstAttribute="trailing" secondItem="5Ac-tr-gYI" secondAttribute="trailing" constant="20" symbolic="YES" id="yvo-e0-1NP"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Playing Card" id="Uwt-Ol-2Q0" userLabel="Tab Bar Item - Playing Card Game"/>
                     <connections>
@@ -88,7 +100,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Bd-dO-y9Y">
-                                <rect key="frame" x="20" y="34" width="280" height="435"/>
+                                <rect key="frame" x="20" y="20" width="280" height="443"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -100,7 +112,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yox-Bz-nyc">
-                                <rect key="frame" x="166" y="466" width="144" height="32"/>
+                                <rect key="frame" x="179" y="466" width="121" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="1"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -113,7 +125,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIX-nj-eRR">
-                                <rect key="frame" x="214" y="488" width="86" height="30"/>
+                                <rect key="frame" x="20" y="488" width="86" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="More Cards">

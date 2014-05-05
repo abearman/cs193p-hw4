@@ -24,7 +24,6 @@
 - (UIImage *)backgroundImageForCard:(Card *)card;
 - (Deck *)createDeck;
 - (void) setUpCards;
-- (void) redrawCards;
 - (NSUInteger) minimumNumberOfCards;
 
 @end

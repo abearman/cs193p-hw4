@@ -34,22 +34,38 @@
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
     self.grid = [[Grid alloc] init];
     [self setUpGrid];
-    [self setUpCards];
-    
-    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
-    self.tapRecognizer.numberOfTapsRequired = 1;
-    [self.backgroundView addGestureRecognizer:self.tapRecognizer];
-    
-    self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchAction:)];
-    [self.backgroundView addGestureRecognizer:self.pinchRecognizer];
-    
-    self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
-    [self.backgroundView addGestureRecognizer:self.panRecognizer];
-    [self.panRecognizer setMaximumNumberOfTouches:1];
+    [self setUpGestureRecognizers];
     
     // Start a new game
     [self reinitializeGame];
-    [self redrawCards];
+    [self setUpCards];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self setUpGrid];
+    [self relayoutViewsInGrid];
+}
+
+- (void)relayoutViewsInGrid {
+    for (SetCardView *scView in self.cardViews) {
+        [scView removeFromSuperview];
+    }
+    self.cardViews = [[NSMutableArray alloc] init];
+    [self setUpCards];
+}
+
+- (void)setUpCards {
+    int index = 0;
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells) break;
+            Card *card = [self.game cardAtIndex:index];
+            index++;
+            CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+            CardView *cardView = [self initializeCardViewWithCard:card withRect:viewRect];
+            [self.backgroundView addSubview:cardView];
+        }
+    }
 }
 
 /*
@@ -57,7 +73,6 @@
  */
 - (IBAction)startNewGame:(UIButton *)sender {
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: 0"]; // Resets the score label to 0
-    [self updateAllCards];
     [self flipAllCards];
     
     double i = 0.0;
@@ -71,7 +86,6 @@
                          completion:^(BOOL finished) {
                              if (!redrawn) {
                                  [self reinitializeGame]; // Redeal all cards by reinitializing the CardMatchingGame object
-                                 [self redrawCards];
                                  redrawn = YES;
                              }
                              view.frame = CGRectOffset(view.frame, 0, -1500);
@@ -164,13 +178,27 @@
     self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
 }
 
+- (void)setUpGestureRecognizers {
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
+    self.tapRecognizer.numberOfTapsRequired = 1;
+    [self.backgroundView addGestureRecognizer:self.tapRecognizer];
+    
+    self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchAction:)];
+    [self.backgroundView addGestureRecognizer:self.pinchRecognizer];
+    
+    self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+    [self.backgroundView addGestureRecognizer:self.panRecognizer];
+    [self.panRecognizer setMaximumNumberOfTouches:1];
+}
+
+
 - (NSUInteger) minimumNumberOfCards {
     return 0;
 }
-- (void) setUpCards { }
+
+- (CardView *) initializeCardViewWithCard:card withRect:(CGRect)viewRect { return nil; }
 - (void) flipAllCards { }
 - (void)updateAllCards { }
-- (void) redrawCards { }
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
 - (UIImage *)backgroundImageForCard:(Card *)card { return nil; }
 - (Deck *)createDeck { return nil; }

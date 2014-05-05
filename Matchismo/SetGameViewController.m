@@ -38,35 +38,25 @@
     self.game.gameMode = 1;
     self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
     
-    for (SetCardView *scView in self.cardViews) {
+    /*for (SetCardView *scView in self.cardViews) {
         [scView removeFromSuperview];
     }
     self.cardViews = [[NSMutableArray alloc] init];
-    [self setUpCards];
+    [self setUpCards];*/
 }
 
-- (void) setUpCards {
-    int index = 0;
-    for (int i = 0; i < self.grid.rowCount; i++) {
-        for (int j = 0; j < self.grid.columnCount; j++) {
-            if (index >= self.grid.minimumNumberOfCells) break;
-            Card *card = [self.game cardAtIndex:index];
-            index++;
-            CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-            SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
-            
-            SetCard *setCard = (SetCard *)card;
-            scView.color = setCard.color;
-            scView.number = setCard.number;
-            scView.shading = setCard.shading;
-            scView.shape = setCard.shape;
-            scView.chosen = setCard.chosen;
-            
-            [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
-            if (!card.matched) [self.backgroundView addSubview:scView];
-            
-        }
-    }
+- (SetCardView *)initializeCardViewWithCard:(Card *)card withRect:(CGRect)viewRect {
+    SetCardView *scView = [[SetCardView alloc] initWithFrame:viewRect];
+    
+    SetCard *setCard = (SetCard *)card;
+    scView.color = setCard.color;
+    scView.number = setCard.number;
+    scView.shading = setCard.shading;
+    scView.shape = setCard.shape;
+    scView.chosen = setCard.chosen;
+    
+    if (!card.matched) [self.backgroundView addSubview:scView];
+    return scView;
 }
 
 - (void)resizeExistingCards: (BOOL)isAdditive {
