@@ -94,15 +94,7 @@
             Card *card = [self.game cardAtIndex:index];
             index++;
             CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
-            
-            SetCardView *scView = [[SetCardView alloc] initWithFrame:CGRectMake(100, 1000, viewRect.size.width, viewRect.size.height)];
-            SetCard *setCard = (SetCard *)card;
-            scView.color = setCard.color;
-            scView.number = setCard.number;
-            scView.shading = setCard.shading;
-            scView.shape = setCard.shape;
-            scView.chosen = setCard.chosen;
-            if (!card.matched) [self.backgroundView addSubview:scView];
+            SetCardView *scView = [self initializeCardViewWithCard:card withRect:CGRectMake(100, 1000, viewRect.size.width, viewRect.size.height)];
             [self.cardViews addObject:scView]; // Adds the SetCardView to the NSMutableArray
             
             [SetCardView animateWithDuration:1.0 delay:((0.2*k++))

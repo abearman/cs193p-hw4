@@ -53,7 +53,7 @@
             if (index >= self.grid.minimumNumberOfCells) break;
             CardView *cardView = [self.cardViews objectAtIndex:index];
             
-            [CardView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+            [CardView animateWithDuration:0.7 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                                   animations:^{
                                       CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
                                       cardView.frame = viewRect;
@@ -185,7 +185,12 @@
     CGFloat height = self.backgroundView.frame.size.height;
     self.grid.size = CGSizeMake(width, height);
     self.grid.cellAspectRatio = 0.67;
-    self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
+    
+    if ([self.cardViews count] > 0) {
+        self.grid.minimumNumberOfCells = [self.cardViews count];
+    } else {
+        self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
+    }
 }
 
 - (void)setUpGestureRecognizers {
