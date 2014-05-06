@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fcf87f6-dbb1-4a65-8a17-aa60a82a8f96" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matchismo/GameViewController.h" afterPath="$PROJECT_DIR$/Matchismo/GameViewController.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matchismo/GameViewController.m" afterPath="$PROJECT_DIR$/Matchismo/GameViewController.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Matchismo/SetGameViewController.m" afterPath="$PROJECT_DIR$/Matchismo/SetGameViewController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cs193p-hw4.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -102,7 +101,7 @@
       <file leaf-file-name="GameViewController.h" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Matchismo/GameViewController.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="14" selection-start="805" selection-end="805" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+            <state line="17" column="55" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
               <folding />
             </state>
           </provider>
@@ -111,7 +110,7 @@
       <file leaf-file-name="GameViewController.m" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Matchismo/GameViewController.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="53" selection-start="3548" selection-end="3548" vertical-scroll-proportion="0.33333334" vertical-offset="1215" max-vertical-offset="3705">
+            <state line="59" column="4" selection-start="1722" selection-end="1722" vertical-scroll-proportion="0.6363636" vertical-offset="465" max-vertical-offset="4200">
               <folding />
             </state>
           </provider>
@@ -152,7 +151,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="34" />
+    <option name="x" value="176" />
     <option name="y" value="240" />
     <option name="width" value="1609" />
     <option name="height" value="868" />
@@ -388,7 +387,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="34" y="240" width="1609" height="868" extended-state="0" />
+    <frame x="176" y="240" width="1609" height="868" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32916147" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -506,13 +505,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Matchismo/GameViewController.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="14" selection-start="805" selection-end="805" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Matchismo/SetCardView.m">
       <provider selected="true" editor-type-id="text-editor">
         <state line="123" column="4" selection-start="5896" selection-end="5896" vertical-scroll-proportion="0.0" vertical-offset="1290" max-vertical-offset="2580">
@@ -527,9 +519,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Matchismo/GameViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="55" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Matchismo/GameViewController.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="99" column="53" selection-start="3548" selection-end="3548" vertical-scroll-proportion="0.33333334" vertical-offset="1215" max-vertical-offset="3705">
+        <state line="59" column="4" selection-start="1722" selection-end="1722" vertical-scroll-proportion="0.6363636" vertical-offset="465" max-vertical-offset="4200">
           <folding />
         </state>
       </provider>

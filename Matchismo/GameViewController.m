@@ -42,6 +42,39 @@
     [self setUpCards];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+
+    [self setUpGrid];
+
+    int index = 0;
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells) break;
+            CardView *cardView = [self.cardViews objectAtIndex:index];
+            cardView.frame = CGRectOffset([self.grid frameOfCellAtRow:i inColumn:j], 0, -1000);
+            index++;
+        }
+    }
+
+    [self.view layoutIfNeeded];
+    [self.backgroundView layoutIfNeeded];
+
+    index = 0;
+    for (int i = 0; i < self.grid.rowCount; i++) {
+        for (int j = 0; j < self.grid.columnCount; j++) {
+            if (index >= self.grid.minimumNumberOfCells) break;
+            CardView *cardView = [self.cardViews objectAtIndex:index];
+            [CardView animateWithDuration:0.7 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                               animations:^{
+                                   cardView.frame = CGRectOffset(cardView.frame, 0, 1000);
+                               }
+                               completion:nil];
+            index++;
+        }
+    }
+
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self setUpGrid];
     [self relayoutViewsInGrid];
