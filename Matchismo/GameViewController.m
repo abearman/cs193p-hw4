@@ -13,6 +13,7 @@
 #import "CardGameViewController.h"
 #import "SetGameViewController.h"
 #import "SetCardView.h"
+#import "CardView.h"
 
 @interface GameViewController ()
 
@@ -89,6 +90,7 @@
     
     double i = 0.0;
     __block BOOL redrawn = NO;
+    __block int completedAnimationCount = 0;
     for (UIView *view in self.cardViews) {
         [UIView animateWithDuration:1.5 delay:1.0*(([self.cardViews count] - i++)/[self.cardViews count])
                             options: UIViewAnimationOptionCurveEaseInOut
@@ -96,20 +98,43 @@
                              view.frame = CGRectOffset(view.frame, 0, 1000);
                          }
                          completion:^(BOOL finished) {
-                             if (!redrawn) {
-                                 [self reinitializeGame:currentGridSize]; // Redeal all cards by reinitializing the CardMatchingGame object
-                                 redrawn = YES;
+                             // Wait until all the cards have finished their initial animation, then on the last completion callback,
+                             // kick off a new animation to bring everyone down to their new grid position
+                             completedAnimationCount++;
+                             if (completedAnimationCount >= [self.cardViews count]) {
+                                 if (!redrawn) {
+
+                                     [self reinitializeGame:currentGridSize]; // Redeal all cards by reinitializing the CardMatchingGame object
+                                     redrawn = YES;
+                                     self.grid.minimumNumberOfCells = [self minimumNumberOfCards];
+
+                                     // Replenish missing views
+
+                                     while ([self.cardViews count] < [self minimumNumberOfCards]) {
+                                         [self.cardViews addObject:[self newCardView]];
+                                     }
+
+                                     [self reinitializeGame:[self minimumNumberOfCards]]; // Redeal all cards by reinitializing the CardMatchingGame object
+
+                                     int index = 0;
+                                     for (int i = 0; i < self.grid.rowCount; i++) {
+                                         for (int j = 0; j < self.grid.columnCount; j++) {
+                                             if (index >= self.grid.minimumNumberOfCells) break;
+                                             UIView *cView = [self.cardViews objectAtIndex:index];
+                                             cView.frame = CGRectOffset([self.grid frameOfCellAtRow:i inColumn:j], 0, -1000);
+
+                                             [UIView animateWithDuration:1.0 delay:1.0*([self.cardViews count] - index)/[self.cardViews count] options:UIViewAnimationOptionCurveEaseInOut
+                                                                   animations:^{
+                                                                       CGRect viewRect = [self.grid frameOfCellAtRow:i inColumn:j];
+                                                                       cView.frame = viewRect;
+                                                                   }
+                                                                   completion:nil];
+                                             index++;
+                                         }
+                                     }
+                                 }
                              }
-                             view.frame = CGRectOffset(view.frame, 0, -1500);
-                             [UIView animateWithDuration:1.0
-                                                   delay:1.0
-                                                 options:UIViewAnimationOptionCurveEaseInOut
-                                              animations:^{
-                                                  view.frame = CGRectOffset(view.frame, 0, 500);
-                                              }
-                                              completion:nil
-                              ];
-                             
+
                          }];
     }
 }
@@ -195,6 +220,7 @@
     }
 }
 
+
 - (void)setUpGestureRecognizers {
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
     self.tapRecognizer.numberOfTapsRequired = 1;
@@ -218,5 +244,6 @@
 - (NSAttributedString *)titleForCard: (Card *)card { return nil; }
 - (UIImage *)backgroundImageForCard:(Card *)card { return nil; }
 - (Deck *)createDeck { return nil; }
+- (CardView *)newCardView { return nil; }
 
 @end

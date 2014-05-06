@@ -10,6 +10,8 @@
 #import "CardMatchingGame.h"
 #import "Grid.h"
 
+@class CardView;
+
 @interface GameViewController : UIViewController
 
 @property (strong, nonatomic) CardMatchingGame *game;
@@ -26,5 +28,6 @@
 - (void) setUpCards;
 - (NSUInteger) minimumNumberOfCards;
 - (void) setUpGrid;
+- (CardView *)newCardView;
 
 @end

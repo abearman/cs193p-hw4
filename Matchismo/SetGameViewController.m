@@ -44,7 +44,7 @@
         [discardViews addObject:scView];
     }
     [self.cardViews removeObjectsInArray:discardViews];
-    
+
     for (SetCardView *scView in self.cardViews) {
         int cardViewIndex = [self.cardViews indexOfObject:scView];
         SetCard *setCard = (SetCard *)[self.game cardAtIndex:cardViewIndex];
@@ -53,9 +53,16 @@
         scView.shading = setCard.shading;
         scView.shape = setCard.shape;
         scView.chosen = setCard.chosen;
-        
+
+
         [scView setNeedsDisplay];
     }
+}
+
+- (CardView *)newCardView {
+    CardView *cardView = [[SetCardView alloc] init];
+    [self.backgroundView addSubview:cardView];
+    return cardView;
 }
 
 - (SetCardView *)initializeCardViewWithCard:(Card *)card withRect:(CGRect)viewRect {
@@ -134,15 +141,15 @@
     for (SetCardView *scView in self.cardViews) {
         NSUInteger cardViewIndex = [self.cardViews indexOfObject:scView];
         Card *card = [self.game cardAtIndex:cardViewIndex];
-        scView.chosen = card.isChosen;
         if (card.matched) {
-           
             [scView removeFromSuperview];
             [discardViews addObject:scView];
             [discardCards addObject:card];
-            
         } else {
-            [scView setNeedsDisplay];
+            if (scView.chosen != card.isChosen) {
+                scView.chosen = card.isChosen;
+                [scView setNeedsDisplay];
+            }
         }
     }
     
